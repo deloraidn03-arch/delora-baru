@@ -1,0 +1,150 @@
+{
+  "project_info": {
+    "app_name": "Delora - Bloom & Gift",
+    "description": "A luxury, artisanal UMKM bookkeeping web app tailored for bouquet, floral arrangement, and custom gift businesses.",
+    "context": "saas_app / hybrid_fullstack bookkeeping application",
+    "design_archetype": "Organic & Earthy with Swiss Precision (Botanical Craft + High-Density Financial Utility)"
+  },
+  "theme": {
+    "default_mode": "light",
+    "colors": {
+      "primary": {
+        "hex": "#8CAA9A",
+        "description": "Sage Green - Used for primary headers, navigation accents, main CTA buttons, active state indicators",
+        "foreground": "#FFFFFF"
+      },
+      "accent": {
+        "hex": "#E8D9B8",
+        "description": "Warm Cream / Vintage Gold - Used for sub-brand 'Bloom & Gift' script text, highlight pills, badge borders, special status highlights",
+        "foreground": "#2E3B34"
+      },
+      "dark_text": {
+        "hex": "#2E3B34",
+        "description": "Deep Forest Slate - Primary dark color for high contrast body text, headings, and key numeric figures",
+        "muted_text": "#5C6F64"
+      },
+      "surface": {
+        "background": "#F6F8F6",
+        "card_bg": "#FFFFFF",
+        "card_border": "#E2E8E4",
+        "modal_overlay": "rgba(46, 59, 52, 0.6)",
+        "sidebar_bg": "#1F2B24"
+      },
+      "status_colors": {
+        "success": {
+          "bg": "#E8F5E9",
+          "border": "#A5D6A7",
+          "text": "#2E7D32",
+          "label": "Lunas / Selesai / Pemasukan (Green)"
+        },
+        "warning": {
+          "bg": "#FFF8E1",
+          "border": "#FFE082",
+          "text": "#F57F17",
+          "label": "DP / Dalam Proses / Menunggu (Gold/Amber)"
+        },
+        "danger": {
+          "bg": "#FFEBEE",
+          "border": "#FFCDD2",
+          "text": "#C62828",
+          "label": "Stok Kritis / Pengeluaran / Batal / Belum Bayar (Red)"
+        },
+        "info": {
+          "bg": "#E3F2FD",
+          "border": "#90CAF9",
+          "text": "#1565C0",
+          "label": "Siap Kirim / Draft (Blue)"
+        }
+      }
+    }
+  },
+  "typography": {
+    "brand_heading": {
+      "family": "'Cormorant Garamond', 'Playfair Display', serif",
+      "weights": ["600", "700"],
+      "usage": "Main logo text ('Delora'), section titles, modal hero titles, invoice headers, and sub-brand script ('Bloom & Gift')"
+    },
+    "body_ui": {
+      "family": "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
+      "weights": ["400", "500", "600", "700"],
+      "usage": "Data tables, form inputs, button labels, badges, financial numbers, tab navigation"
+    },
+    "mono": {
+      "family": "'JetBrains Mono', 'Fira Code', monospace",
+      "usage": "Invoice codes (e.g., DEL-2026-0891), order IDs, transaction references"
+    },
+    "type_scale": {
+      "h1_hero": "text-3xl md:text-5xl font-bold tracking-tight",
+      "h2_section": "text-2xl md:text-3xl font-semibold tracking-tight",
+      "h3_card": "text-lg md:text-xl font-medium",
+      "body": "text-sm md:text-base leading-relaxed",
+      "small_label": "text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+    }
+  },
+  "layout_and_responsive": {
+    "navigation_strategy": {
+      "desktop": "Collapsible sticky sidebar on left with brand header, workspace tenant switcher, 8 menu navigation items with duotone icons, and quick action CTA button.",
+      "mobile": "Fixed top bar with Delora brand logo + tenant switcher, paired with a sticky bottom navigation bar (5 main quick-tabs + 'Lainnya' drawer for full 8 menus). Touch targets >= 44px."
+    },
+    "grid_system": {
+      "dashboard_kpi": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6",
+      "form_grid": "grid-cols-1 md:grid-cols-12 gap-4",
+      "bento_features": "grid grid-cols-1 md:grid-cols-3 gap-6"
+    },
+    "responsive_tables": {
+      "desktop": "Standard dense HTML table with rounded borders, sticky header, multi-column metrics, and hover highlight.",
+      "mobile": "Transforms into vertical card list with clean visual separation, expandable details, and quick action buttons."
+    }
+  },
+  "modules_specification": {
+    "1_dashboard": "KPI metrics (Omset Bulan Ini, Total Pesanan Active, High Margin Item, Alert Stok Kritis), revenue vs expense chart (Recharts bar/area), recent color-coded transactions (Hijau Pemasukan, Merah Pengeluaran), and quick action drawer.",
+    "2_inventory": "Product & raw material catalog (Bunga Mawar, Wrapping Paper, Ribbon, Flower Box, Custom Card), minimum stock alert banner (Latar Merah Soft + Red Border), stock status badges, add/edit modal with image preview.",
+    "3_biaya": "Expense tracker with IDR CurrencyInput, category filter (Bahan Baku, Operasional, Transport, Marketing), receipt upload preview, searchable vendor dropdown.",
+    "4_penjualan": "Sales record table, daily income summary, automatic posting integration from completed orders, IDR formatting.",
+    "5_pembelian": "Purchase order management for raw materials, supplier list, order status (Pending, Received, Paid).",
+    "6_pesanan": {
+      "description": "The flagship complex module featuring 5 distinct tabs and multi-item batch request capabilities.",
+      "tabs": [
+        {"id": "semua", "label": "Semua Pesanan", "badge": "List View & Grouped View"},
+        {"id": "bouquet_fresh", "label": "Bouquet Bunga Segar", "description": "Form custom komposisi bunga & pita"},
+        {"id": "bouquet_artificial", "label": "Bouquet Artificial / Money", "description": "Form pecahan uang & tipe awetan"},
+        {"id": "gift_box", "label": "Bloom Box & Gift Set", "description": "Form ukuran box & varian kado"},
+        {"id": "custom_event", "label": "Dekor & Custom Event", "description": "Form venue, tanggal acara & moodboard"}
+      ],
+      "key_features": [
+        "Dynamic multi-item row builder (Nama Item, Qty, Harga Invoice, Harga Asli, Subtotal calculation)",
+        "Batch multi-order single customer grouping (groupId expand/collapse UI)",
+        "Order status pills (Menunggu, Diproses, Merangkai, Siap Kirim, Selesai, Batal)",
+        "Payment status pills (Belum Bayar [Red], DP [Amber], Lunas [Green])",
+        "Quick View Modal with WhatsApp structured invoice message copy generator and PDF preview simulation",
+        "Order Completion Modal that posts sales to Penjualan and reduces Inventory stock automatically"
+      ]
+    },
+    "7_customer": "Customer database (Regular, VIP, Corporate), transaction history per customer, birthday/anniversary reminder indicators.",
+    "8_aset_tetap": "Fixed assets ledger (Meja Merangkai, Mobil Operasional, Cold Storage, Scissors Set) with depreciation calculation table (Penyusutan Tahunan) and yearly preview chart."
+  },
+  "complex_components": {
+    "currency_input": "IDR formatted auto-parsing text input (e.g. typing 150000 renders as 'Rp 150.000')",
+    "group_order_accordion": "Expandable container displaying batch orders under 1 Customer with total aggregate price tag",
+    "quick_view_modal": "Slide-over or centered dialog showing order breakdown, WhatsApp shareable quote text, and printable invoice style",
+    "order_completion_modal": "Confirmation modal with toggle for 'Post ke Penjualan' and 'Potong Stok Otomatis' with line-item stock check"
+  },
+  "image_assets": {
+    "bouquet_fresh_rose": "https://images.unsplash.com/photo-1615363750824-e8c53205cde1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHxfMTc4OTY0OTU1MXww&ixlib=rb-4.1.0&q=85",
+    "gift_box_chrysanthemum": "https://images.pexels.com/photos/14275704/pexels-photo-14275704.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "luxury_ribbon_accent": "https://images.unsplash.com/photo-1668127039852-0e7c8b3a1601?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwyfHxmbG93ZXIlMjBib3VxdWV0JTIwZ2lmdCUyMGJveCUyMHJpYmJvbnxlbnwwfHx8fDE3ODk2NDk1NTF8MA&ixlib=rb-4.1.0&q=85",
+    "pink_present_rose": "https://images.pexels.com/photos/6532979/pexels-photo-6532979.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  },
+  "testing_and_accessibility": {
+    "data_testid_convention": "All interactive elements (buttons, inputs, tabs, modals, tables, badges) MUST include descriptive kebab-case data-testid attributes (e.g., data-testid='pesanan-tab-bouquet-fresh', data-testid='btn-complete-order-101', data-testid='input-currency-harga-invoice').",
+    "touch_target_min": "44px height/width on all mobile buttons and navigation controls.",
+    "contrast_compliance": "High contrast ratio with sage green `#8CAA9A` header and `#2E3B34` text ensuring APCA/WCAG AA compliance."
+  },
+  "instructions_to_main_agent": [
+    "1. Read this guidelines file to ensure exact adherence to Delora brand rules, colors, and layout strategies.",
+    "2. Implement frontend components in .js/.jsx files inside `/app/frontend/src/`.",
+    "3. Use Tailwind CSS utility classes customized with Delora colors (#8CAA9A primary, #E8D9B8 accent, #2E3B34 dark text).",
+    "4. Ensure full testability by applying data-testid to every interactive component across all 8 menu screens.",
+    "5. Make sure the Pesanan module is fully functional with all 5 tabs, multi-item request rows, WhatsApp/PDF Quick View, and stock deduction Order Completion modal."
+  ]
+}

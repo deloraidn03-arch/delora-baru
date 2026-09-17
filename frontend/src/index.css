@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand: #8caa9a;
+  --brand-dark: #6f8f7f;
+  --gold: #e8d9b8;
+  --ink: #2e3b34;
+  --muted: #5c6f64;
+  --surface: #f6f8f6;
+  --line: #dfe7e1;
+}
+
+html,
+body {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Hilangkan spinner input number (aturan lintas-menu #1) */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #c3d0c7;
+  border-radius: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@layer components {
+  .input-base {
+    @apply h-11 w-full rounded-lg border border-[#d8e0da] bg-white px-3 text-sm text-[#2e3b34] placeholder-[#93a298] focus:outline-none focus:ring-2 focus:ring-[#8caa9a] transition-shadow;
+  }
+  .btn-primary {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg bg-[#8caa9a] px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#6f8f7f] disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-secondary {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg border border-[#d8e0da] bg-white px-4 py-2 text-sm font-semibold text-[#2e3b34] transition-colors hover:bg-[#f0f4f1];
+  }
+  .btn-danger {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg bg-[#c62828] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#a31f1f];
+  }
+  .card {
+    @apply rounded-xl border border-[#e2e8e4] bg-white shadow-sm;
+  }
+  .label-base {
+    @apply mb-1 block text-xs font-semibold uppercase tracking-wide text-[#5c6f64];
+  }
+}
