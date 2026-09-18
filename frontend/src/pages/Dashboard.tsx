@@ -14,9 +14,34 @@ import { useAuth } from '../contexts/AuthContext';
 import { Account, ACCOUNT_LABELS, Transaction } from '../lib/types';
 import { formatIDR, formatDate } from '../lib/format';
 
-const monthKey = () => {
-  const n = new Date();
-  return `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}`;
+type PeriodPreset = 'hari_ini' | 'minggu_ini' | 'bulan_ini' | 'tahun_ini' | 'semua';
+
+const PERIOD_PRESETS: { id: PeriodPreset; label: string }[] = [
+  { id: 'hari_ini', label: 'Hari Ini' },
+  { id: 'minggu_ini', label: 'Minggu Ini' },
+  { id: 'bulan_ini', label: 'Bulan Ini' },
+  { id: 'tahun_ini', label: 'Tahun Ini' },
+  { id: 'semua', label: 'Semua' },
+];
+
+// Rentang [start, end) — end eksklusif (besok 00:00 waktu lokal)
+const getRange = (preset: PeriodPreset): { start: Date | null; end: Date | null } => {
+  const now = new Date();
+  const end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+  switch (preset) {
+    case 'hari_ini':
+      return { start: new Date(now.getFullYear(), now.getMonth(), now.getDate()), end };
+    case 'minggu_ini': {
+      const day = (now.getDay() + 6) % 7; // Senin = awal minggu
+      return { start: new Date(now.getFullYear(), now.getMonth(), now.getDate() - day), end };
+    }
+    case 'bulan_ini':
+      return { start: new Date(now.getFullYear(), now.getMonth(), 1), end };
+    case 'tahun_ini':
+      return { start: new Date(now.getFullYear(), 0, 1), end };
+    case 'semua':
+      return { start: null, end: null };
+  }
 };
 
 const INCOME_TYPES = ['sale_product', 'sale_custom', 'sale_topup', 'investment'];
@@ -24,7 +49,7 @@ const OUTFLOW_TYPES = ['purchase_material', 'purchase_custom', 'expense'];
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
-  const [period, setPeriod] = useState(monthKey());
+  const [preset, setPreset] = useState<PeriodPreset>('hari_ini');
   const [txs, setTxs] = useState<Transaction[]>([]);
   const [recent, setRecent] = useState<Transaction[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -35,11 +60,12 @@ const Dashboard: React.FC = () => {
   const load = useCallback(async () => {
     if (!user) return;
     setLoading(true);
-    const [y, m] = period.split('-').map(Number);
-    const start = new Date(y, m - 1, 1).toISOString();
-    const end = new Date(y, m, 1).toISOString();
+    const { start, end } = getRange(preset);
+    let txQuery = supabase.from('transactions').select('*').eq('user_id', user.id);
+    if (start) txQuery = txQuery.gte('date', start.toISOString());
+    if (end) txQuery = txQuery.lt('date', end.toISOString());
     const [txRes, recentRes, accRes, depRes, assetRes] = await Promise.all([
-      supabase.from('transactions').select('*').eq('user_id', user.id).gte('date', start).lt('date', end),
+      txQuery,
       supabase.from('transactions').select('*').eq('user_id', user.id).order('date', { ascending: false }).limit(10),
       supabase.from('accounts').select('*').eq('user_id', user.id),
       supabase.from('asset_depreciations').select('*').eq('user_id', user.id),
@@ -51,13 +77,31 @@ const Dashboard: React.FC = () => {
     setDepRows(depRes.data || []);
     setAssetValue((assetRes.data || []).reduce((s: number, a: any) => s + (Number(a.current_value) || 0), 0));
     setLoading(false);
-  }, [user, period]);
+  }, [user, preset]);
 
   useEffect(() => {
     load();
   }, [load]);
 
-  const [y, m] = period.split('-').map(Number);
+  // Penyusutan yang masuk rentang periode terpilih
+  const depInRange = useMemo(() => {
+    const { start, end } = getRange(preset);
+    return depRows
+      .filter((r) => {
+        if (!start || !end) return true;
+        const d = new Date(r.period_year, r.period_month - 1, 1);
+        return d >= new Date(start.getFullYear(), start.getMonth(), 1) && d < end;
+      })
+      .reduce((s, r) => s + (Number(r.depreciation_amount) || 0), 0);
+  }, [depRows, preset]);
+
+  // Kartu "Penyusutan Bulan Ini" selalu bulan berjalan (tidak ikut filter)
+  const depThisMonth = useMemo(() => {
+    const now = new Date();
+    return depRows
+      .filter((r) => r.period_month === now.getMonth() + 1 && r.period_year === now.getFullYear())
+      .reduce((s, r) => s + (Number(r.depreciation_amount) || 0), 0);
+  }, [depRows]);
 
   const kpis = useMemo(() => {
     // Total Penjualan
@@ -76,37 +120,65 @@ const Dashboard: React.FC = () => {
     const opex = txs
       .filter((t) => t.type === 'expense')
       .reduce((s, t) => s + Math.abs(Number(t.amount) || 0), 0);
-    const dep = depRows
-      .filter((r) => r.period_month === m && r.period_year === y)
-      .reduce((s, r) => s + (Number(r.depreciation_amount) || 0), 0);
+    const dep = depInRange;
     return { sales, prodCost, opex, dep, net: sales - prodCost - dep - opex };
-  }, [txs, depRows, m, y]);
+  }, [txs, depInRange]);
 
   const totalKas = accounts
     .filter((a) => ['cash', 'atm', 'tabungan'].includes(a.name))
     .reduce((s, a) => s + (Number(a.balance) || 0), 0);
 
   const chartData = useMemo(() => {
-    const days = new Date(y, m, 0).getDate();
+    const isSale = (t: Transaction) => ['sale_product', 'sale_custom', 'sale_topup'].includes(t.type);
+    const isCost = (t: Transaction) =>
+      ((['purchase_material', 'purchase_custom'].includes(t.type) &&
+        t.metadata?.is_asset !== true &&
+        t.metadata?.is_asset !== 'true') ||
+        t.type === 'expense');
+    const { start, end } = getRange(preset);
+    const rangeDays = start && end ? Math.ceil((end.getTime() - start.getTime()) / 86400000) : Infinity;
     const rows: { day: string; penjualan: number; biaya: number }[] = [];
-    for (let d = 1; d <= days; d++) {
-      const dayTxs = txs.filter((t) => new Date(t.date).getDate() === d);
-      const penjualan = dayTxs
-        .filter((t) => ['sale_product', 'sale_custom', 'sale_topup'].includes(t.type))
-        .reduce((s, t) => s + Math.abs(Number(t.amount) || 0), 0);
-      const biaya = dayTxs
-        .filter(
-          (t) =>
-            (['purchase_material', 'purchase_custom'].includes(t.type) &&
-              t.metadata?.is_asset !== true &&
-              t.metadata?.is_asset !== 'true') ||
-            t.type === 'expense'
-        )
-        .reduce((s, t) => s + Math.abs(Number(t.amount) || 0), 0);
-      rows.push({ day: String(d), penjualan, biaya });
+    if (start && end && rangeDays <= 62) {
+      // Granularitas harian untuk rentang pendek
+      const cursor = new Date(start);
+      while (cursor < end) {
+        const dayTxs = txs.filter((t) => {
+          const td = new Date(t.date);
+          return (
+            td.getFullYear() === cursor.getFullYear() &&
+            td.getMonth() === cursor.getMonth() &&
+            td.getDate() === cursor.getDate()
+          );
+        });
+        rows.push({
+          day: cursor.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }),
+          penjualan: dayTxs.filter(isSale).reduce((s, t) => s + Math.abs(Number(t.amount) || 0), 0),
+          biaya: dayTxs.filter(isCost).reduce((s, t) => s + Math.abs(Number(t.amount) || 0), 0),
+        });
+        cursor.setDate(cursor.getDate() + 1);
+      }
+      return rows;
     }
-    return rows;
-  }, [txs, y, m]);
+    // Granularitas bulanan untuk Tahun Ini / Semua
+    const map = new Map<string, { day: string; penjualan: number; biaya: number }>();
+    for (const t of txs) {
+      const td = new Date(t.date);
+      const key = `${td.getFullYear()}-${String(td.getMonth()).padStart(2, '0')}`;
+      if (!map.has(key)) {
+        map.set(key, {
+          day: td.toLocaleDateString('id-ID', { month: 'short', year: '2-digit' }),
+          penjualan: 0,
+          biaya: 0,
+        });
+      }
+      const row = map.get(key)!;
+      if (isSale(t)) row.penjualan += Math.abs(Number(t.amount) || 0);
+      if (isCost(t)) row.biaya += Math.abs(Number(t.amount) || 0);
+    }
+    return Array.from(map.entries())
+      .sort(([a], [b]) => (a < b ? -1 : 1))
+      .map(([, v]) => v);
+  }, [txs, preset]);
 
   const txLabel = (t: Transaction): string => {
     const mta = t.metadata || {};
@@ -156,15 +228,22 @@ const Dashboard: React.FC = () => {
           <h1 className="font-brand text-3xl font-bold tracking-tight text-[#2e3b34] sm:text-4xl">Dashboard</h1>
           <p className="text-sm text-[#5c6f64]">Ringkasan keuangan &amp; metrik bisnis</p>
         </div>
-        <div>
+        <div className="w-full sm:w-auto">
           <label className="label-base">Periode</label>
-          <input
-            type="month"
-            value={period}
-            onChange={(e) => setPeriod(e.target.value || monthKey())}
-            className="input-base w-full sm:w-48"
-            data-testid="dashboard-period-filter"
-          />
+          <div className="flex gap-1.5 overflow-x-auto rounded-2xl bg-[#F2F7F4] p-1.5" data-testid="dashboard-period-filter">
+            {PERIOD_PRESETS.map((p) => (
+              <button
+                key={p.id}
+                onClick={() => setPreset(p.id)}
+                className={`min-h-[40px] whitespace-nowrap rounded-xl px-3.5 text-xs font-semibold transition-all duration-200 sm:text-sm ${
+                  preset === p.id ? 'bg-white text-[#2E3B34] shadow-sm' : 'text-[#5C6E64] hover:text-[#2E3B34]'
+                }`}
+                data-testid={`period-${p.id.replace(/_/g, '-')}`}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -253,7 +332,7 @@ const Dashboard: React.FC = () => {
           </div>
           <div className="rounded-xl bg-[#F2F7F4] p-4" data-testid="penyusutan-bulan-ini-card">
             <div className="text-xs font-semibold uppercase tracking-wide text-[#5c6f64]">Penyusutan Bulan Ini</div>
-            <div className="num mt-1 text-xl font-bold text-[#2E3B34]">{formatIDR(kpis.dep)}</div>
+            <div className="num mt-1 text-xl font-bold text-[#2E3B34]">{formatIDR(depThisMonth)}</div>
           </div>
         </div>
       </div>

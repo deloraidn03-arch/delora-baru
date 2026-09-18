@@ -27,6 +27,7 @@ Web app pembukuan UMKM bouquet & custom product sesuai dokumen kerja v3, stack R
 - TESTING E2E LENGKAP (2 iterasi, ~95% pass): login, dashboard, kas/bank, inventory, biaya, penjualan (4 tab + edit reverse), pembelian (3 tab + is_asset exclusion), pesanan end-to-end (batch multi-order, groupId, Quick View WA, edit, completion posting nominal EXACT 152k, stok terpotong, hapus item tidak cascade), aset penyusutan saldo menurun backdated, customer auto-create via combobox, responsif 390px.
 - Fix pasca-test: bulk delete by status baca status fresh dari DB per-order; group badge pakai order created_at pertama; fallback clipboard WA (execCommand); tutup modal dengan Escape; HPP bahan baru auto-derive totalPayment/qty; combobox role=combobox/option + Enter-to-create.
 - Login E2E browser terverifikasi (delora / Delora2026!) — dashboard & pesanan render dengan data nyata, mobile 390px tanpa overflow.
+- Filter periode Dashboard: preset Hari Ini (DEFAULT), Minggu Ini (Senin–), Bulan Ini, Tahun Ini, Semua (pill buttons, data-testid period-hari-ini dst). Grafik adaptif: harian ≤62 hari, bulanan untuk tahun/all-time. Kartu "Penyusutan Bulan Ini" selalu bulan berjalan; KPI laba memakai penyusutan dalam rentang. Terverifikasi screenshot semua preset + mobile.
 - Catatan by design: saldo akun kas boleh negatif (arus kas owner bebas).
 
 ## UI Refresh (2026-09-18) — "fresh, modern, seamless", palet soft logo tetap
