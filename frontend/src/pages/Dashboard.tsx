@@ -12,9 +12,9 @@ import { TrendingUp, TrendingDown, Wallet, Landmark } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 import { Account, ACCOUNT_LABELS, Transaction } from '../lib/types';
-import { formatIDR, formatDate } from '../lib/format';
+import { formatIDR, formatDate, todayISO } from '../lib/format';
 
-type PeriodPreset = 'hari_ini' | 'minggu_ini' | 'bulan_ini' | 'tahun_ini' | 'semua';
+type PeriodPreset = 'hari_ini' | 'minggu_ini' | 'bulan_ini' | 'tahun_ini' | 'semua' | 'custom';
 
 const PERIOD_PRESETS: { id: PeriodPreset; label: string }[] = [
   { id: 'hari_ini', label: 'Hari Ini' },
@@ -22,6 +22,7 @@ const PERIOD_PRESETS: { id: PeriodPreset; label: string }[] = [
   { id: 'bulan_ini', label: 'Bulan Ini' },
   { id: 'tahun_ini', label: 'Tahun Ini' },
   { id: 'semua', label: 'Semua' },
+  { id: 'custom', label: 'Pilih Detail' },
 ];
 
 // Rentang [start, end) — end eksklusif (besok 00:00 waktu lokal)
@@ -50,6 +51,29 @@ const OUTFLOW_TYPES = ['purchase_material', 'purchase_custom', 'expense'];
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
   const [preset, setPreset] = useState<PeriodPreset>('hari_ini');
+  const [customMode, setCustomMode] = useState<'tanggal' | 'bulan' | 'tahun'>('tanggal');
+  const [customDate, setCustomDate] = useState(todayISO());
+  const [customMonth, setCustomMonth] = useState(() => {
+    const n = new Date();
+    return `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}`;
+  });
+  const [customYear, setCustomYear] = useState(new Date().getFullYear());
+
+  // Rentang aktif: preset cepat ATAU pilihan detail (tanggal/bulan/tahun tertentu)
+  const range = useMemo(() => {
+    if (preset !== 'custom') return getRange(preset);
+    if (customMode === 'tanggal') {
+      const d = new Date(customDate + 'T00:00:00');
+      if (isNaN(d.getTime())) return getRange('hari_ini');
+      return { start: d, end: new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1) };
+    }
+    if (customMode === 'bulan') {
+      const [y, m] = customMonth.split('-').map(Number);
+      if (!y || !m) return getRange('bulan_ini');
+      return { start: new Date(y, m - 1, 1), end: new Date(y, m, 1) };
+    }
+    return { start: new Date(customYear, 0, 1), end: new Date(customYear + 1, 0, 1) };
+  }, [preset, customMode, customDate, customMonth, customYear]);
   const [txs, setTxs] = useState<Transaction[]>([]);
   const [recent, setRecent] = useState<Transaction[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -60,7 +84,7 @@ const Dashboard: React.FC = () => {
   const load = useCallback(async () => {
     if (!user) return;
     setLoading(true);
-    const { start, end } = getRange(preset);
+    const { start, end } = range;
     let txQuery = supabase.from('transactions').select('*').eq('user_id', user.id);
     if (start) txQuery = txQuery.gte('date', start.toISOString());
     if (end) txQuery = txQuery.lt('date', end.toISOString());
@@ -77,7 +101,7 @@ const Dashboard: React.FC = () => {
     setDepRows(depRes.data || []);
     setAssetValue((assetRes.data || []).reduce((s: number, a: any) => s + (Number(a.current_value) || 0), 0));
     setLoading(false);
-  }, [user, preset]);
+  }, [user, range]);
 
   useEffect(() => {
     load();
@@ -85,7 +109,7 @@ const Dashboard: React.FC = () => {
 
   // Penyusutan yang masuk rentang periode terpilih
   const depInRange = useMemo(() => {
-    const { start, end } = getRange(preset);
+    const { start, end } = range;
     return depRows
       .filter((r) => {
         if (!start || !end) return true;
@@ -93,7 +117,7 @@ const Dashboard: React.FC = () => {
         return d >= new Date(start.getFullYear(), start.getMonth(), 1) && d < end;
       })
       .reduce((s, r) => s + (Number(r.depreciation_amount) || 0), 0);
-  }, [depRows, preset]);
+  }, [depRows, range]);
 
   // Kartu "Penyusutan Bulan Ini" selalu bulan berjalan (tidak ikut filter)
   const depThisMonth = useMemo(() => {
@@ -135,7 +159,7 @@ const Dashboard: React.FC = () => {
         t.metadata?.is_asset !== true &&
         t.metadata?.is_asset !== 'true') ||
         t.type === 'expense');
-    const { start, end } = getRange(preset);
+    const { start, end } = range;
     const rangeDays = start && end ? Math.ceil((end.getTime() - start.getTime()) / 86400000) : Infinity;
     const rows: { day: string; penjualan: number; biaya: number }[] = [];
     if (start && end && rangeDays <= 62) {
@@ -178,7 +202,7 @@ const Dashboard: React.FC = () => {
     return Array.from(map.entries())
       .sort(([a], [b]) => (a < b ? -1 : 1))
       .map(([, v]) => v);
-  }, [txs, preset]);
+  }, [txs, range]);
 
   const txLabel = (t: Transaction): string => {
     const mta = t.metadata || {};
@@ -244,6 +268,56 @@ const Dashboard: React.FC = () => {
               </button>
             ))}
           </div>
+          {preset === 'custom' && (
+            <div className="mt-2 flex flex-wrap items-center gap-1.5" data-testid="period-custom-panel">
+              {(['tanggal', 'bulan', 'tahun'] as const).map((m) => (
+                <button
+                  key={m}
+                  onClick={() => setCustomMode(m)}
+                  className={`min-h-[40px] rounded-xl px-3.5 text-xs font-semibold transition-all duration-200 sm:text-sm ${
+                    customMode === m
+                      ? 'bg-[#8CAA9A] text-white shadow-sm'
+                      : 'border border-[#E6E2D8] bg-white text-[#5C6E64] hover:text-[#2E3B34]'
+                  }`}
+                  data-testid={`period-custom-mode-${m}`}
+                >
+                  {m === 'tanggal' ? 'Per Tanggal' : m === 'bulan' ? 'Per Bulan' : 'Per Tahun'}
+                </button>
+              ))}
+              {customMode === 'tanggal' && (
+                <input
+                  type="date"
+                  className="input-base w-auto"
+                  value={customDate}
+                  onChange={(e) => setCustomDate(e.target.value || todayISO())}
+                  data-testid="period-custom-date"
+                />
+              )}
+              {customMode === 'bulan' && (
+                <input
+                  type="month"
+                  className="input-base w-auto"
+                  value={customMonth}
+                  onChange={(e) => setCustomMonth(e.target.value)}
+                  data-testid="period-custom-month"
+                />
+              )}
+              {customMode === 'tahun' && (
+                <select
+                  className="input-base w-auto"
+                  value={customYear}
+                  onChange={(e) => setCustomYear(Number(e.target.value))}
+                  data-testid="period-custom-year"
+                >
+                  {Array.from({ length: 11 }, (_, i) => new Date().getFullYear() - 10 + i).map((y) => (
+                    <option key={y} value={y}>
+                      {y}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
