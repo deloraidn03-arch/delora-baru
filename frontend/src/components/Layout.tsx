@@ -97,7 +97,7 @@ const Layout: React.FC = () => {
 
       {/* Drawer mobile (semua menu) */}
       {drawerOpen && (
-        <div className="fixed inset-0 z-50 bg-[#1F2823]/50 backdrop-blur-sm md:hidden" onClick={() => setDrawerOpen(false)}>
+        <div className="fixed inset-0 z-50 bg-[#1F2823]/40 md:hidden" onClick={() => setDrawerOpen(false)}>
           <div
             className="animate-modal absolute inset-y-0 left-0 flex w-72 flex-col bg-[#1F2823] shadow-2xl"
             onClick={(e) => e.stopPropagation()}

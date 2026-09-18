@@ -6,7 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { Customer } from '../lib/types';
 import { Modal } from '../components/Modal';
 
-const emptyForm = { name: '', whatsapp_number: '', notes: '' };
+const emptyForm = { name: '', whatsapp_number: '', address: '', notes: '' };
 
 const Customers: React.FC = () => {
   const { user } = useAuth();
@@ -38,7 +38,7 @@ const Customers: React.FC = () => {
 
   const openEdit = (c: Customer) => {
     setEditing(c);
-    setForm({ name: c.name, whatsapp_number: c.whatsapp_number || '', notes: c.notes || '' });
+    setForm({ name: c.name, whatsapp_number: c.whatsapp_number || '', address: c.address || '', notes: c.notes || '' });
     setModalOpen(true);
   };
 
@@ -92,6 +92,7 @@ const Customers: React.FC = () => {
             <tr className="border-b border-[#e2e8e4] bg-[#f6f8f6] text-left text-xs uppercase tracking-wide text-[#5c6f64]">
               <th className="px-4 py-3">Nama</th>
               <th className="px-4 py-3">WhatsApp</th>
+              <th className="px-4 py-3">Alamat</th>
               <th className="px-4 py-3">Catatan</th>
               <th className="px-4 py-3 text-right">Aksi</th>
             </tr>
@@ -115,6 +116,7 @@ const Customers: React.FC = () => {
                     '-'
                   )}
                 </td>
+                <td className="px-4 py-3 text-[#5c6f64]">{c.address || '-'}</td>
                 <td className="px-4 py-3 text-[#5c6f64]">{c.notes || '-'}</td>
                 <td className="px-4 py-3">
                   <div className="flex justify-end gap-1">
@@ -130,7 +132,7 @@ const Customers: React.FC = () => {
             ))}
             {!filtered.length && (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-[#5c6f64]">
+                <td colSpan={5} className="px-4 py-8 text-center text-[#5c6f64]">
                   Belum ada customer
                 </td>
               </tr>
@@ -146,6 +148,7 @@ const Customers: React.FC = () => {
               <div>
                 <div className="font-semibold text-[#2e3b34]">{c.name}</div>
                 {c.whatsapp_number && <div className="text-xs text-[#5c6f64]">{c.whatsapp_number}</div>}
+                {c.address && <div className="mt-0.5 text-xs text-[#5c6f64]">{c.address}</div>}
                 {c.notes && <div className="mt-1 text-xs text-[#93a298]">{c.notes}</div>}
               </div>
               <div className="flex gap-1">
@@ -183,6 +186,16 @@ const Customers: React.FC = () => {
               value={form.whatsapp_number}
               onChange={(e) => setForm({ ...form, whatsapp_number: e.target.value })}
               data-testid="customer-wa-input"
+            />
+          </div>
+          <div>
+            <label className="label-base">Alamat</label>
+            <textarea
+              className="input-base h-20 resize-none py-2"
+              placeholder="Alamat lengkap customer"
+              value={form.address}
+              onChange={(e) => setForm({ ...form, address: e.target.value })}
+              data-testid="customer-address-input"
             />
           </div>
           <div>

@@ -64,6 +64,7 @@ create table if not exists public.customers (
   user_id uuid not null references auth.users(id) on delete cascade,
   name text not null,
   whatsapp_number text,
+  address text,
   notes text,
   created_at timestamptz not null default now()
 );

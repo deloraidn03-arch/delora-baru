@@ -49,6 +49,7 @@ export interface Customer {
   user_id: string;
   name: string;
   whatsapp_number?: string;
+  address?: string;
   notes?: string;
 }
 

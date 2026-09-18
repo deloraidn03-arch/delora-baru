@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { toast } from 'sonner';
-import { Copy, Printer } from 'lucide-react';
+import { Copy, Printer, MessageCircle } from 'lucide-react';
 import { Modal } from '../Modal';
 import { Order, ORDER_TYPE_LABELS } from '../../lib/types';
 import { formatIDR, formatDate } from '../../lib/format';
@@ -37,10 +37,13 @@ const OrderQuickViewModal: React.FC<Props> = ({ orders, onClose }) => {
   const buildWhatsAppMessage = (): string => {
     const lines: string[] = [];
     lines.push('*DELORA — Bloom & Gift*');
-    lines.push('Invoice Pesanan');
-    lines.push(`Customer: ${first.customer_name}`);
-    lines.push(`Deadline: ${formatDate(first.delivery_date)}`);
-    lines.push('——————————————');
+    lines.push('*INVOICE PESANAN*');
+    lines.push('');
+    lines.push(`Kepada Yth. ${first.customer_name}`);
+    lines.push(`Tanggal pesanan: ${formatDate(first.order_date)}`);
+    lines.push(`Batas pengiriman: ${formatDate(first.delivery_date)}`);
+    lines.push('');
+    lines.push('Rincian Pesanan:');
     orders.forEach((o, i) => {
       lines.push(`*${i + 1}. ${ORDER_TYPE_LABELS[o.type]}*`);
       if (o.type === 'money_bouquet' && o.metadata?.moneyItems?.length) {
@@ -56,22 +59,55 @@ const OrderQuickViewModal: React.FC<Props> = ({ orders, onClose }) => {
       if (Number(o.metadata?.serviceFee)) lines.push(`   Harga Jasa: ${formatIDR(o.metadata.serviceFee)}`);
       if (Number(o.metadata?.discount)) lines.push(`   Diskon jasa: ${o.metadata.discount}% (−${formatIDR((Number(o.metadata?.serviceFee) || 0) - getDiscountedServiceFee(o))})`);
       lines.push(`   Subtotal: ${formatIDR(calculateOrderTotal(o) - (Number(o.metadata?.ongkir) || 0))}`);
+      lines.push('');
     });
-    lines.push('——————————————');
-    lines.push(`Ongkir (Pengiriman): ${formatIDR(agg.ongkir)}`);
-    lines.push(`*Grand Total: ${formatIDR(agg.grandTotal)}*`);
-    lines.push(`Total DP: ${formatIDR(agg.totalDp)}`);
+    lines.push(`Ongkos kirim: ${formatIDR(agg.ongkir)}`);
+    lines.push(`*Total Tagihan: ${formatIDR(agg.grandTotal)}*`);
+    lines.push(`Uang muka (DP): ${formatIDR(agg.totalDp)}`);
     lines.push(`*Sisa Pembayaran: ${formatIDR(agg.sisa)}*`);
-    lines.push('——————————————');
-    lines.push('Pembayaran:');
-    lines.push('BRI');
-    lines.push('a.n. Pemilik Delora');
-    lines.push('No Rek: -');
     lines.push('');
-    lines.push('BCA');
-    lines.push('I Nyoman Tri Adnyana');
-    lines.push('No Rek: 3950716265');
+    lines.push('Pembayaran dapat dilakukan melalui transfer ke rekening berikut:');
+    lines.push('');
+    lines.push('🏦 BRI');
+    lines.push('a.n. I Nyoman Tri Adnyana');
+    lines.push('No. Rek: 800601014225533');
+    lines.push('');
+    lines.push('🏦 BCA');
+    lines.push('a.n. I Nyoman Tri Adnyana');
+    lines.push('No. Rek: 3950716265');
+    lines.push('');
+    lines.push('Mohon konfirmasi dengan mengirimkan bukti transfer ke nomor ini.');
+    lines.push('Terima kasih telah mempercayakan pesanan Anda kepada Delora — Bloom & Gift.');
     return lines.join('\n');
+  };
+
+  // Kirim langsung ke WhatsApp customer (tanpa salin manual)
+  const handleSendWhatsApp = async () => {
+    if (!user) return toast.error('User not authenticated');
+    const message = buildWhatsAppMessage();
+    let phone = '';
+    if (first.customer_id) {
+      const { data } = await supabase
+        .from('customers')
+        .select('whatsapp_number')
+        .eq('id', first.customer_id)
+        .maybeSingle();
+      phone = data?.whatsapp_number || '';
+    }
+    if (!phone && first.customer_name) {
+      const { data } = await supabase
+        .from('customers')
+        .select('whatsapp_number')
+        .eq('user_id', user.id)
+        .ilike('name', first.customer_name)
+        .maybeSingle();
+      phone = data?.whatsapp_number || '';
+    }
+    if (!phone) {
+      return toast.error('Nomor WhatsApp customer belum diisi. Tambahkan dulu di menu Customer.');
+    }
+    const normalized = phone.replace(/[^\d]/g, '').replace(/^0/, '62');
+    window.open(`https://wa.me/${normalized}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   const handleCopy = async () => {
@@ -146,7 +182,7 @@ const OrderQuickViewModal: React.FC<Props> = ({ orders, onClose }) => {
       <tr><td>Total DP</td><td class="r"></td><td class="r">${formatIDR(dp)}</td></tr>
       <tr class="tot"><td>Sisa Pembayaran</td><td class="r"></td><td class="r">${formatIDR(sisa)}</td></tr>
       </table>
-      <div class="foot">Pembayaran:\nBRI — a.n. Pemilik Delora — No Rek: -\n\nBCA — I Nyoman Tri Adnyana — No Rek: 3950716265</div>
+      <div class="foot">Pembayaran dapat dilakukan melalui transfer ke:\n\nBRI — a.n. I Nyoman Tri Adnyana — No. Rek: 800601014225533\nBCA — a.n. I Nyoman Tri Adnyana — No. Rek: 3950716265\n\nMohon konfirmasi dengan mengirimkan bukti transfer.\nTerima kasih — Delora Bloom &amp; Gift</div>
       <script>window.onload=function(){window.print();}</script>
     </body></html>`;
   };
@@ -240,8 +276,15 @@ const OrderQuickViewModal: React.FC<Props> = ({ orders, onClose }) => {
         </div>
 
         <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
+          <button
+            onClick={handleSendWhatsApp}
+            className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-[#1EBE5B] active:scale-95"
+            data-testid="quickview-send-wa"
+          >
+            <MessageCircle size={16} /> Kirim ke WhatsApp Customer
+          </button>
           <button onClick={handleCopy} className="btn-secondary" data-testid="quickview-copy-wa">
-            <Copy size={16} /> Salin Pesan WhatsApp
+            <Copy size={16} /> Salin Pesan
           </button>
           <button onClick={handlePrint} className="btn-primary" data-testid="quickview-print-pdf">
             <Printer size={16} /> Cetak PDF Invoice
