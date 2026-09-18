@@ -100,7 +100,7 @@ const CashBank: React.FC = () => {
   return (
     <div className="space-y-5" data-testid="cashbank-page">
       <div>
-        <h1 className="font-brand text-3xl font-bold text-[#2e3b34]">Kas &amp; Bank</h1>
+        <h1 className="font-brand text-3xl font-bold tracking-tight text-[#2e3b34] sm:text-4xl">Kas &amp; Bank</h1>
         <p className="text-sm text-[#5c6f64]">Saldo akun, transfer antar akun, dan modal masuk</p>
       </div>
 

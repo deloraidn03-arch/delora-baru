@@ -153,7 +153,7 @@ const Dashboard: React.FC = () => {
     <div className="space-y-6" data-testid="dashboard-page">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="font-brand text-3xl font-bold text-[#2e3b34]">Dashboard</h1>
+          <h1 className="font-brand text-3xl font-bold tracking-tight text-[#2e3b34] sm:text-4xl">Dashboard</h1>
           <p className="text-sm text-[#5c6f64]">Ringkasan keuangan &amp; metrik bisnis</p>
         </div>
         <div>
@@ -169,29 +169,53 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* KPI cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="card p-5" data-testid="kpi-total-penjualan">
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#5c6f64]">
-            <TrendingUp size={14} className="text-[#2e7d32]" /> Total Penjualan
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
+        <div
+          className="card group relative overflow-hidden p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-4px_rgba(46,59,52,0.09)]"
+          data-testid="kpi-total-penjualan"
+        >
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#8CAA9A] to-[#E8D9B8]" />
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F2F7F4] text-[#6F8F7F]">
+              <TrendingUp size={18} />
+            </div>
+            <div className="text-[11px] font-semibold uppercase tracking-widest text-[#85978C]">Total Penjualan</div>
           </div>
-          <div className="mt-2 text-2xl font-bold text-[#2e3b34]">{formatIDR(kpis.sales)}</div>
+          <div className="num mt-3 text-2xl font-bold tracking-tight text-[#2E3B34]">{formatIDR(kpis.sales)}</div>
         </div>
-        <div className="card p-5" data-testid="kpi-biaya-produksi">
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#5c6f64]">
-            <TrendingDown size={14} className="text-[#c62828]" /> Biaya Produksi
+        <div
+          className="card group relative overflow-hidden p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-4px_rgba(46,59,52,0.09)]"
+          data-testid="kpi-biaya-produksi"
+        >
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#E8D9B8] to-[#F3E9D2]" />
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#FAF6ED] text-[#C9A227]">
+              <TrendingDown size={18} />
+            </div>
+            <div className="text-[11px] font-semibold uppercase tracking-widest text-[#85978C]">Biaya Produksi</div>
           </div>
-          <div className="mt-2 text-2xl font-bold text-[#2e3b34]">{formatIDR(kpis.prodCost)}</div>
-          <div className="mt-1 text-[11px] text-[#93a298]">Tidak termasuk pembelian aset</div>
+          <div className="num mt-3 text-2xl font-bold tracking-tight text-[#2E3B34]">{formatIDR(kpis.prodCost)}</div>
+          <div className="mt-1 text-[11px] text-[#A6B4AA]">Tidak termasuk pembelian aset</div>
         </div>
-        <div className="card p-5" data-testid="kpi-biaya-operasional">
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#5c6f64]">
-            <Wallet size={14} className="text-[#f57f17]" /> Biaya Operasional
+        <div
+          className="card group relative overflow-hidden p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-4px_rgba(46,59,52,0.09)]"
+          data-testid="kpi-biaya-operasional"
+        >
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#A9C3B4] to-[#8CAA9A]" />
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F2F7F4] text-[#8CAA9A]">
+              <Wallet size={18} />
+            </div>
+            <div className="text-[11px] font-semibold uppercase tracking-widest text-[#85978C]">Biaya Operasional</div>
           </div>
-          <div className="mt-2 text-2xl font-bold text-[#2e3b34]">{formatIDR(kpis.opex)}</div>
+          <div className="num mt-3 text-2xl font-bold tracking-tight text-[#2E3B34]">{formatIDR(kpis.opex)}</div>
         </div>
-        <div className="card bg-[#8caa9a] p-5 text-white" data-testid="kpi-laba-bersih">
-          <div className="text-xs font-semibold uppercase tracking-wide text-white/80">Laba Bersih</div>
-          <div className="mt-2 text-2xl font-bold">{formatIDR(kpis.net)}</div>
+        <div
+          className="card relative overflow-hidden border-0 bg-gradient-to-br from-[#8CAA9A] to-[#6F8F7F] p-5 text-white shadow-[0_12px_32px_-4px_rgba(111,143,127,0.4)]"
+          data-testid="kpi-laba-bersih"
+        >
+          <div className="text-[11px] font-semibold uppercase tracking-widest text-white/75">Laba Bersih</div>
+          <div className="num mt-3 text-2xl font-bold tracking-tight sm:text-3xl">{formatIDR(kpis.net)}</div>
           <div className="mt-1 text-[11px] text-white/70">
             Penjualan − Produksi − Penyusutan ({formatIDR(kpis.dep)}) − Operasional
           </div>
@@ -205,27 +229,31 @@ const Dashboard: React.FC = () => {
           {['cash', 'atm', 'tabungan', 'brilink_cash', 'brilink_bank'].map((name) => {
             const acc = accounts.find((a) => a.name === name);
             return (
-              <div key={name} className="rounded-lg border border-[#e2e8e4] bg-[#f6f8f6] p-3" data-testid={`saldo-${name}`}>
-                <div className="text-xs font-medium text-[#5c6f64]">{ACCOUNT_LABELS[name]}</div>
-                <div className="mt-1 text-sm font-bold text-[#2e3b34]">{formatIDR(acc?.balance || 0)}</div>
+              <div
+                key={name}
+                className="rounded-xl border border-[#E8D9B8]/70 bg-[#FAF6ED]/50 p-3.5 transition-all duration-200 hover:border-[#E8D9B8] hover:shadow-sm"
+                data-testid={`saldo-${name}`}
+              >
+                <div className="text-[11px] font-semibold uppercase tracking-widest text-[#85978C]">{ACCOUNT_LABELS[name]}</div>
+                <div className="num mt-1 text-sm font-bold text-[#2E3B34]">{formatIDR(acc?.balance || 0)}</div>
               </div>
             );
           })}
         </div>
         <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <div className="rounded-lg bg-[#edf3f0] p-4" data-testid="total-kas-card">
+          <div className="rounded-xl bg-[#F2F7F4] p-4" data-testid="total-kas-card">
             <div className="text-xs font-semibold uppercase tracking-wide text-[#5c6f64]">Total Kas (Cash+ATM+Tabungan)</div>
-            <div className="mt-1 text-xl font-bold text-[#2e3b34]">{formatIDR(totalKas)}</div>
+            <div className="num mt-1 text-xl font-bold text-[#2E3B34]">{formatIDR(totalKas)}</div>
           </div>
-          <div className="rounded-lg bg-[#edf3f0] p-4" data-testid="nilai-aset-card">
+          <div className="rounded-xl bg-[#F2F7F4] p-4" data-testid="nilai-aset-card">
             <div className="flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-[#5c6f64]">
               <Landmark size={13} /> Nilai Aset Tetap
             </div>
-            <div className="mt-1 text-xl font-bold text-[#2e3b34]">{formatIDR(assetValue)}</div>
+            <div className="num mt-1 text-xl font-bold text-[#2E3B34]">{formatIDR(assetValue)}</div>
           </div>
-          <div className="rounded-lg bg-[#edf3f0] p-4" data-testid="penyusutan-bulan-ini-card">
+          <div className="rounded-xl bg-[#F2F7F4] p-4" data-testid="penyusutan-bulan-ini-card">
             <div className="text-xs font-semibold uppercase tracking-wide text-[#5c6f64]">Penyusutan Bulan Ini</div>
-            <div className="mt-1 text-xl font-bold text-[#2e3b34]">{formatIDR(kpis.dep)}</div>
+            <div className="num mt-1 text-xl font-bold text-[#2E3B34]">{formatIDR(kpis.dep)}</div>
           </div>
         </div>
       </div>

@@ -110,8 +110,8 @@ export const SearchableSelect: React.FC<Props> = ({
                   onChange(o.value, o.label);
                   setOpen(false);
                 }}
-                className={`flex min-h-[44px] w-full items-center justify-between gap-2 px-3 py-2 text-left text-sm transition-colors hover:bg-[#f0f4f1] ${
-                  o.value === value ? 'bg-[#edf3f0] font-semibold text-[#2e3b34]' : ''
+                className={`flex min-h-[44px] w-full items-center justify-between gap-2 px-3 py-2 text-left text-sm transition-colors hover:bg-[#FAF8F3] ${
+                  o.value === value ? 'bg-[#F2F7F4] font-semibold text-[#2e3b34]' : ''
                 }`}
                 data-testid={`${rest['data-testid'] || 'select'}-option-${o.value}`}
               >
@@ -129,7 +129,7 @@ export const SearchableSelect: React.FC<Props> = ({
                   onCreate?.(query.trim());
                   setOpen(false);
                 }}
-                className="flex min-h-[44px] w-full items-center px-3 py-2 text-left text-sm font-semibold text-[#6f8f7f] hover:bg-[#f0f4f1]"
+                className="flex min-h-[44px] w-full items-center px-3 py-2 text-left text-sm font-semibold text-[#6f8f7f] hover:bg-[#FAF8F3]"
                 data-testid={`${rest['data-testid'] || 'select'}-create`}
               >
                 + Tambah &quot;{query.trim()}&quot;

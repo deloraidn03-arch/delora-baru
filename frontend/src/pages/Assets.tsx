@@ -192,7 +192,7 @@ const Assets: React.FC = () => {
     <div className="space-y-5" data-testid="assets-page">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="font-brand text-3xl font-bold text-[#2e3b34]">Aset Tetap</h1>
+          <h1 className="font-brand text-3xl font-bold tracking-tight text-[#2e3b34] sm:text-4xl">Aset Tetap</h1>
           <p className="text-sm text-[#5c6f64]">Penyusutan otomatis per bulan — metode saldo menurun</p>
         </div>
         <button onClick={openAdd} className="btn-primary" data-testid="add-asset-button">
@@ -230,7 +230,7 @@ const Assets: React.FC = () => {
       <div className="card hidden overflow-hidden md:block">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#e2e8e4] bg-[#f6f8f6] text-left text-xs uppercase tracking-wide text-[#5c6f64]">
+            <tr className="border-b border-[#e2e8e4] bg-[#FAF8F3] text-left text-xs uppercase tracking-wide text-[#5c6f64]">
               <th className="px-4 py-3">Aset</th>
               <th className="px-4 py-3">Kategori</th>
               <th className="px-4 py-3 text-right">Harga Perolehan</th>
@@ -244,7 +244,7 @@ const Assets: React.FC = () => {
             {filtered.map((a) => {
               const lowValue = Number(a.current_value) < 0.2 * Number(a.purchase_price);
               return (
-                <tr key={a.id} className="border-b border-[#eef2ef] hover:bg-[#f6f8f6]" data-testid={`asset-row-${a.id}`}>
+                <tr key={a.id} className="border-b border-[#eef2ef] hover:bg-[#FAF8F3]" data-testid={`asset-row-${a.id}`}>
                   <td className="px-4 py-3">
                     <div className="font-medium">{a.name}</div>
                     <div className="text-xs text-[#93a298]">Beli {formatDate(a.purchase_date)}</div>
@@ -271,7 +271,7 @@ const Assets: React.FC = () => {
                       <button onClick={() => setHistoryTarget(a)} className="flex h-11 w-11 items-center justify-center rounded-lg text-[#1565c0] hover:bg-[#e3f2fd]" title="Riwayat penyusutan" data-testid={`asset-history-${a.id}`}>
                         <History size={16} />
                       </button>
-                      <button onClick={() => openEdit(a)} className="flex h-11 w-11 items-center justify-center rounded-lg text-[#6f8f7f] hover:bg-[#edf3f0]" title="Edit" data-testid={`edit-asset-${a.id}`}>
+                      <button onClick={() => openEdit(a)} className="flex h-11 w-11 items-center justify-center rounded-lg text-[#6f8f7f] hover:bg-[#F2F7F4]" title="Edit" data-testid={`edit-asset-${a.id}`}>
                         <Pencil size={16} />
                       </button>
                       <button onClick={() => setDeleteTarget(a)} className="flex h-11 w-11 items-center justify-center rounded-lg text-[#c62828] hover:bg-[#ffebee]" title="Hapus" data-testid={`delete-asset-${a.id}`}>
@@ -314,11 +314,11 @@ const Assets: React.FC = () => {
                 </span>
               </div>
               <div className="mt-3 grid grid-cols-2 gap-2 text-center text-xs">
-                <div className="rounded-lg bg-[#f6f8f6] p-2">
+                <div className="rounded-lg bg-[#FAF8F3] p-2">
                   <div className="text-[#5c6f64]">Perolehan</div>
                   <div className="font-bold">{formatIDR(a.purchase_price)}</div>
                 </div>
-                <div className="rounded-lg bg-[#f6f8f6] p-2">
+                <div className="rounded-lg bg-[#FAF8F3] p-2">
                   <div className="text-[#5c6f64]">Nilai Buku</div>
                   <div className={`font-bold ${lowValue ? 'text-[#c62828]' : ''}`}>{formatIDR(a.current_value)}</div>
                 </div>
@@ -396,7 +396,7 @@ const Assets: React.FC = () => {
             <div className="overflow-hidden rounded-lg border border-[#e2e8e4]">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-[#f6f8f6] text-left text-xs uppercase tracking-wide text-[#5c6f64]">
+                  <tr className="bg-[#FAF8F3] text-left text-xs uppercase tracking-wide text-[#5c6f64]">
                     <th className="px-3 py-2">Tahun</th>
                     <th className="px-3 py-2 text-right">Penyusutan</th>
                     <th className="px-3 py-2 text-right">Nilai Buku Akhir</th>
@@ -449,7 +449,7 @@ const Assets: React.FC = () => {
             <div className="overflow-hidden rounded-lg border border-[#e2e8e4]">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-[#f6f8f6] text-left text-xs uppercase tracking-wide text-[#5c6f64]">
+                  <tr className="bg-[#FAF8F3] text-left text-xs uppercase tracking-wide text-[#5c6f64]">
                     <th className="px-3 py-2">Periode</th>
                     <th className="px-3 py-2 text-right">Penyusutan</th>
                     <th className="px-3 py-2 text-right">Nilai Buku Sebelum</th>
@@ -477,7 +477,7 @@ const Assets: React.FC = () => {
                 </tbody>
               </table>
             </div>
-            <div className="mt-3 flex justify-between rounded-lg bg-[#edf3f0] px-4 py-3 text-sm font-semibold" data-testid="asset-history-total">
+            <div className="mt-3 flex justify-between rounded-lg bg-[#F2F7F4] px-4 py-3 text-sm font-semibold" data-testid="asset-history-total">
               <span>Total Akumulasi Penyusutan</span>
               <span>{formatIDR(assetHistory(historyTarget).reduce((s, r) => s + (Number(r.depreciation_amount) || 0), 0))}</span>
             </div>

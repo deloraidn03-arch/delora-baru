@@ -684,7 +684,7 @@ const Orders: React.FC = () => {
       </button>
       <button
         onClick={() => handleEdit(o)}
-        className="flex h-11 w-11 items-center justify-center rounded-lg text-[#6f8f7f] hover:bg-[#edf3f0]"
+        className="flex h-11 w-11 items-center justify-center rounded-lg text-[#6f8f7f] hover:bg-[#F2F7F4]"
         title="Edit"
         data-testid={`order-edit-${o.id}`}
       >
@@ -734,7 +734,7 @@ const Orders: React.FC = () => {
     <div className="space-y-5" data-testid="orders-page">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="font-brand text-3xl font-bold text-[#2e3b34]">Pesanan</h1>
+          <h1 className="font-brand text-3xl font-bold tracking-tight text-[#2e3b34] sm:text-4xl">Pesanan</h1>
           <p className="text-sm text-[#5c6f64]">Input pesanan → produksi → pelunasan → post ke penjualan</p>
         </div>
         <div className="relative">
@@ -782,10 +782,10 @@ const Orders: React.FC = () => {
 
       {/* Tabs: Semua Pesanan + 4 tipe form */}
       <div className="card p-4 sm:p-6" id="order-form-section">
-        <div className="grid grid-cols-2 gap-1 rounded-lg bg-[#edf3f0] p-1 sm:grid-cols-5">
+        <div className="grid grid-cols-2 gap-1.5 rounded-2xl bg-[#F2F7F4] p-1.5 sm:grid-cols-5">
           <button
             onClick={() => setActiveTab('all_orders')}
-            className={`min-h-[44px] rounded-md text-xs font-semibold transition-colors sm:text-sm ${
+            className={`min-h-[44px] rounded-xl text-xs font-semibold transition-all duration-200 sm:text-sm ${
               activeTab === 'all_orders' ? 'bg-white text-[#2e3b34] shadow-sm' : 'text-[#5c6f64]'
             }`}
             data-testid="order-tab-all-orders"
@@ -796,7 +796,7 @@ const Orders: React.FC = () => {
             <button
               key={t.id}
               onClick={() => setActiveTab(t.id)}
-              className={`min-h-[44px] rounded-md text-xs font-semibold transition-colors sm:text-sm ${
+              className={`min-h-[44px] rounded-xl text-xs font-semibold transition-all duration-200 sm:text-sm ${
                 activeTab === t.id ? 'bg-white text-[#2e3b34] shadow-sm' : 'text-[#5c6f64]'
               }`}
               data-testid={`order-tab-${t.id.replace(/_/g, '-')}`}
@@ -851,7 +851,7 @@ const Orders: React.FC = () => {
             <div className="hidden overflow-x-auto md:block">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-[#e2e8e4] bg-[#f6f8f6] text-left text-xs uppercase tracking-wide text-[#5c6f64]">
+                  <tr className="border-b border-[#e2e8e4] bg-[#FAF8F3] text-left text-xs uppercase tracking-wide text-[#5c6f64]">
                     <th className="px-3 py-3">Customer / Pesanan</th>
                     <th className="px-3 py-3">Deadline</th>
                     <th className="px-3 py-3">Status Order</th>
@@ -867,7 +867,7 @@ const Orders: React.FC = () => {
                     return (
                       <React.Fragment key={gid}>
                         <tr
-                          className="cursor-pointer border-b border-[#dfe7e1] bg-[#edf3f0] hover:bg-[#e3ece6]"
+                          className="cursor-pointer border-b border-[#dfe7e1] bg-[#F2F7F4] hover:bg-[#e3ece6]"
                           onClick={() =>
                             setExpandedGroups((prev) => {
                               const next = new Set(prev);
@@ -897,7 +897,7 @@ const Orders: React.FC = () => {
                         </tr>
                         {expanded &&
                           group.map((o) => (
-                            <tr key={o.id} className="border-b border-[#eef2ef] hover:bg-[#f6f8f6]" data-testid={`order-row-${o.id}`}>
+                            <tr key={o.id} className="border-b border-[#eef2ef] hover:bg-[#FAF8F3]" data-testid={`order-row-${o.id}`}>
                               <td className="px-3 py-3 pl-9">
                                 <div className="font-medium">{ORDER_TYPE_LABELS[o.type]}</div>
                                 <div className="text-xs text-[#93a298]">Pesan: {formatDate(o.order_date)}</div>
@@ -931,7 +931,7 @@ const Orders: React.FC = () => {
                 return (
                   <div key={gid} className="card overflow-hidden" data-testid={`order-group-card-${gid}`}>
                     <button
-                      className="flex w-full items-center justify-between gap-2 bg-[#edf3f0] px-4 py-3 text-left"
+                      className="flex w-full items-center justify-between gap-2 bg-[#F2F7F4] px-4 py-3 text-left"
                       onClick={() =>
                         setExpandedGroups((prev) => {
                           const next = new Set(prev);
@@ -1052,7 +1052,7 @@ const Orders: React.FC = () => {
 
             {/* Daftar pending orders + ongkir + status bayar */}
             {pendingOrders.length > 0 && !addToGroup && (
-              <div className="space-y-4 rounded-xl border border-[#dfe7e1] bg-[#f6f8f6] p-4" data-testid="pending-orders-section">
+              <div className="space-y-4 rounded-xl border border-[#dfe7e1] bg-[#FAF8F3] p-4" data-testid="pending-orders-section">
                 <h3 className="font-brand text-lg font-semibold text-[#2e3b34]">
                   Pending Orders ({pendingOrders.length})
                 </h3>
@@ -1147,7 +1147,7 @@ const Orders: React.FC = () => {
           Pilih cakupan penghapusan. Menghapus satu item <strong>tidak pernah</strong> menghapus pesanan lain dalam
           group.
         </p>
-        <div className="mt-4 rounded-lg bg-[#f6f8f6] p-3 text-sm">
+        <div className="mt-4 rounded-lg bg-[#FAF8F3] p-3 text-sm">
           <div>
             Item: <strong>{deleteTarget ? ORDER_TYPE_LABELS[deleteTarget.order.type] : ''}</strong>
           </div>

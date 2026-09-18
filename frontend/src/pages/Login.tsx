@@ -84,13 +84,33 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#8caa9a] px-4 py-10">
-      <div className="w-full max-w-md">
-        <div className="mb-8 text-center">
-          <div className="font-brand text-5xl font-bold tracking-[0.22em] text-white">DELORA</div>
-          <div className="font-brand mt-1 text-lg italic text-[#e8d9b8]">— Bloom &amp; Gift —</div>
+    <div className="flex min-h-screen bg-[#FDFBF7]">
+      {/* Panel brand — desktop */}
+      <div className="relative hidden w-[46%] overflow-hidden bg-[#8CAA9A] lg:flex lg:flex-col lg:justify-between lg:p-12">
+        <img
+          src="https://images.unsplash.com/photo-1544928147-79a2dbc1f389?crop=entropy&cs=srgb&fm=jpg&q=85"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover opacity-30 mix-blend-luminosity"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#8CAA9A]/70 via-[#8CAA9A]/85 to-[#6F8F7F]" />
+        <div className="animate-fade-up relative">
+          <div className="font-brand text-6xl font-bold tracking-[0.22em] text-white">DELORA</div>
+          <div className="font-script mt-2 text-3xl text-[#E8D9B8]">Bloom &amp; Gift</div>
         </div>
-        <div className="card p-6 sm:p-8" data-testid="login-card">
+        <p className="relative max-w-sm text-sm leading-relaxed text-white/85">
+          Pembukuan artisan untuk usaha bouquet &amp; custom product — pesanan, stok, kas, dan aset dalam satu tempat
+          yang tenang.
+        </p>
+      </div>
+
+      {/* Form */}
+      <div className="flex flex-1 items-center justify-center px-4 py-10">
+        <div className="animate-fade-up w-full max-w-md">
+        <div className="mb-8 text-center lg:hidden">
+          <div className="font-brand text-5xl font-bold tracking-[0.22em] text-[#8CAA9A]">DELORA</div>
+          <div className="font-script mt-1 text-2xl text-[#C9A227]">Bloom &amp; Gift</div>
+        </div>
+        <div className="card border-[#E6E2D8] p-6 shadow-[0_12px_32px_-4px_rgba(46,59,52,0.09)] sm:p-8" data-testid="login-card">
           {!supabaseConfigured && (
             <div
               className="mb-4 rounded-lg border border-[#ffe082] bg-[#fff8e1] px-3 py-2 text-xs text-[#8a6d00]"
@@ -99,10 +119,10 @@ const Login: React.FC = () => {
               Konfigurasi Supabase belum diisi. Isi VITE_SUPABASE_URL dan VITE_SUPABASE_ANON_KEY di file .env.
             </div>
           )}
-          <div className="mb-6 grid grid-cols-2 rounded-lg bg-[#edf3f0] p-1">
+          <div className="mb-6 grid grid-cols-2 rounded-2xl bg-[#F2F7F4] p-1.5">
             <button
               onClick={() => setMode('login')}
-              className={`min-h-[44px] rounded-md text-sm font-semibold transition-colors ${
+              className={`min-h-[44px] rounded-xl text-sm font-semibold transition-all duration-200 ${
                 mode === 'login' ? 'bg-white text-[#2e3b34] shadow-sm' : 'text-[#5c6f64]'
               }`}
               data-testid="login-tab"
@@ -111,7 +131,7 @@ const Login: React.FC = () => {
             </button>
             <button
               onClick={() => setMode('register')}
-              className={`min-h-[44px] rounded-md text-sm font-semibold transition-colors ${
+              className={`min-h-[44px] rounded-xl text-sm font-semibold transition-all duration-200 ${
                 mode === 'register' ? 'bg-white text-[#2e3b34] shadow-sm' : 'text-[#5c6f64]'
               }`}
               data-testid="register-tab"
@@ -195,6 +215,7 @@ const Login: React.FC = () => {
               </button>
             </form>
           )}
+        </div>
         </div>
       </div>
     </div>

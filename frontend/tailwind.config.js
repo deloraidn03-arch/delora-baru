@@ -10,8 +10,10 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        brand: ['"Cormorant Garamond"', 'serif'],
-        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        brand: ['"Cormorant Garamond"', '"Playfair Display"', 'Georgia', 'serif'],
+        script: ['Caveat', '"Dancing Script"', 'cursive'],
+        sans: ['"Plus Jakarta Sans"', 'Outfit', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', '"Source Code Pro"', 'monospace'],
       },
       colors: {
         brand: {

@@ -259,17 +259,17 @@ const Sales: React.FC = () => {
   return (
     <div className="space-y-5" data-testid="sales-page">
       <div>
-        <h1 className="font-brand text-3xl font-bold text-[#2e3b34]">Penjualan</h1>
+        <h1 className="font-brand text-3xl font-bold tracking-tight text-[#2e3b34] sm:text-4xl">Penjualan</h1>
         <p className="text-sm text-[#5c6f64]">Catat penjualan langsung (di luar pesanan)</p>
       </div>
 
       <div className="card p-4 sm:p-6">
-        <div className="grid grid-cols-2 gap-1 rounded-lg bg-[#edf3f0] p-1 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-1.5 rounded-2xl bg-[#F2F7F4] p-1.5 sm:grid-cols-4">
           {tabs.map((t) => (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`min-h-[44px] rounded-md text-xs font-semibold transition-colors sm:text-sm ${
+              className={`min-h-[44px] rounded-xl text-xs font-semibold transition-all duration-200 sm:text-sm ${
                 tab === t.id ? 'bg-white text-[#2e3b34] shadow-sm' : 'text-[#5c6f64]'
               }`}
               data-testid={`sale-tab-${t.id}`}
@@ -331,7 +331,7 @@ const Sales: React.FC = () => {
                 {accountOptions}
               </div>
               <div className="sm:col-span-2">
-                <div className="mb-3 rounded-lg bg-[#edf3f0] px-4 py-3 text-sm">
+                <div className="mb-3 rounded-lg bg-[#F2F7F4] px-4 py-3 text-sm">
                   Total: <strong>{formatIDR((formProduk.sellingPrice || 0) * (formProduk.quantity || 0))}</strong>
                   {selectedProduct ? (
                     <span className="ml-3 text-[#5c6f64]">
@@ -424,7 +424,7 @@ const Sales: React.FC = () => {
                 />
               </div>
               <div className="sm:col-span-2">
-                <div className="mb-3 rounded-lg bg-[#edf3f0] px-4 py-3 text-sm">
+                <div className="mb-3 rounded-lg bg-[#F2F7F4] px-4 py-3 text-sm">
                   Profit: <strong>{formatIDR((formTopup.sellPrice || 0) - (formTopup.hpp || 0))}</strong>
                 </div>
                 <button onClick={handleSubmitTopup} disabled={saving} className="btn-primary w-full sm:w-auto" data-testid="topup-submit">
@@ -444,7 +444,7 @@ const Sales: React.FC = () => {
         <div className="hidden md:block">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#e2e8e4] bg-[#f6f8f6] text-left text-xs uppercase tracking-wide text-[#5c6f64]">
+              <tr className="border-b border-[#e2e8e4] bg-[#FAF8F3] text-left text-xs uppercase tracking-wide text-[#5c6f64]">
                 <th className="px-4 py-3">Tanggal</th>
                 <th className="px-4 py-3">Customer</th>
                 <th className="px-4 py-3">Produk</th>
@@ -458,7 +458,7 @@ const Sales: React.FC = () => {
               {history.map((t) => {
                 const cust = t.metadata?.customerName || t.customer_name || '-';
                 return (
-                  <tr key={t.id} className="border-b border-[#eef2ef] hover:bg-[#f6f8f6]" data-testid={`sale-row-${t.id}`}>
+                  <tr key={t.id} className="border-b border-[#eef2ef] hover:bg-[#FAF8F3]" data-testid={`sale-row-${t.id}`}>
                     <td className="px-4 py-3">{formatDate(t.date)}</td>
                     <td className="px-4 py-3 font-medium">{cust}</td>
                     <td className="px-4 py-3">{t.metadata?.productName || (t.type === 'sale_topup' ? 'Top Up / Pulsa' : '-')}</td>
@@ -467,7 +467,7 @@ const Sales: React.FC = () => {
                     <td className="px-4 py-3 text-right">{formatIDR(t.metadata?.profit || 0)}</td>
                     <td className="px-4 py-3">
                       <div className="flex justify-end gap-1">
-                        <button onClick={() => openEdit(t)} className="flex h-11 w-11 items-center justify-center rounded-lg text-[#6f8f7f] hover:bg-[#edf3f0]" data-testid={`edit-sale-${t.id}`} aria-label="Edit">
+                        <button onClick={() => openEdit(t)} className="flex h-11 w-11 items-center justify-center rounded-lg text-[#6f8f7f] hover:bg-[#F2F7F4]" data-testid={`edit-sale-${t.id}`} aria-label="Edit">
                           <Pencil size={16} />
                         </button>
                         <button onClick={() => setDeleteTarget(t)} className="flex h-11 w-11 items-center justify-center rounded-lg text-[#c62828] hover:bg-[#ffebee]" data-testid={`delete-sale-${t.id}`} aria-label="Hapus">

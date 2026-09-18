@@ -29,6 +29,13 @@ Web app pembukuan UMKM bouquet & custom product sesuai dokumen kerja v3, stack R
 - Login E2E browser terverifikasi (delora / Delora2026!) — dashboard & pesanan render dengan data nyata, mobile 390px tanpa overflow.
 - Catatan by design: saldo akun kas boleh negatif (arus kas owner bebas).
 
+## UI Refresh (2026-09-18) — "fresh, modern, seamless", palet soft logo tetap
+- Sistem desain baru dari design_agent (/app/design_guidelines.json): botanical organic — page bg #FDFBF7, border #E6E2D8, card rounded-2xl + soft layered shadow + hover lift, button rounded-xl + active:scale-95, input bg cream #FDFBF7.
+- Font: Cormorant Garamond (brand/heading), Caveat (script "Bloom & Gift"), Plus Jakarta Sans (UI), JetBrains Mono (angka uang, class .num).
+- Layout: sidebar #1F2823 + active pill sage + shadow; topbar mobile blur; bottom nav mobile jadi floating pill (rounded-full, backdrop-blur-xl); transisi antar halaman animate-fade-up (key per route); konten max-w 1400px.
+- Login: split-screen desktop (panel brand sage + foto workshop + tagline), mobile stacked; modal overlay backdrop-blur + animate-modal; badge status soft (emerald/amber/red); tab pill rounded-2xl di semua halaman.
+- Terverifikasi: build sukses, screenshot login/dashboard/pesanan desktop + mobile 390px tanpa overflow.
+
 ## Backlog (P0/P1/P2)
 - P0: User verifikasi email + deploy edge function → testing agent E2E (login→semua menu→9 aturan lintas-menu).
 - P1: Menu pendukung bagian 9 — Laporan Laba Rugi & Inventory (PDF/Excel), BRILink, Kalkulator Harga, Catatan (financial_notes).

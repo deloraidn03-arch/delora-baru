@@ -114,7 +114,7 @@ const Inventory: React.FC = () => {
     <div className="space-y-5" data-testid="inventory-page">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="font-brand text-3xl font-bold text-[#2e3b34]">Inventory</h1>
+          <h1 className="font-brand text-3xl font-bold tracking-tight text-[#2e3b34] sm:text-4xl">Inventory</h1>
           <p className="text-sm text-[#5c6f64]">Stok produk jadi &amp; bahan baku</p>
         </div>
         <button onClick={openAdd} className="btn-primary" data-testid="add-product-button">
@@ -158,7 +158,7 @@ const Inventory: React.FC = () => {
       <div className="card hidden overflow-hidden md:block">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#e2e8e4] bg-[#f6f8f6] text-left text-xs uppercase tracking-wide text-[#5c6f64]">
+            <tr className="border-b border-[#e2e8e4] bg-[#FAF8F3] text-left text-xs uppercase tracking-wide text-[#5c6f64]">
               <th className="px-4 py-3">Produk</th>
               <th className="px-4 py-3">Tipe</th>
               <th className="px-4 py-3 text-right">HPP</th>
@@ -174,7 +174,7 @@ const Inventory: React.FC = () => {
               return (
                 <tr
                   key={p.id}
-                  className={`border-b border-[#eef2ef] ${isLow ? 'bg-[#ffebee]' : 'hover:bg-[#f6f8f6]'}`}
+                  className={`border-b border-[#eef2ef] ${isLow ? 'bg-[#ffebee]' : 'hover:bg-[#FAF8F3]'}`}
                   data-testid={`inventory-row-${p.id}`}
                 >
                   <td className="px-4 py-3 font-medium">
@@ -186,7 +186,7 @@ const Inventory: React.FC = () => {
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    <span className="rounded-full bg-[#edf3f0] px-2 py-0.5 text-xs font-semibold text-[#6f8f7f]">
+                    <span className="rounded-full bg-[#F2F7F4] px-2 py-0.5 text-xs font-semibold text-[#6f8f7f]">
                       {p.type === 'custom' ? 'Custom' : 'Single'}
                     </span>
                   </td>
@@ -198,7 +198,7 @@ const Inventory: React.FC = () => {
                     <div className="flex justify-end gap-1">
                       <button
                         onClick={() => openEdit(p)}
-                        className="flex h-11 w-11 items-center justify-center rounded-lg text-[#6f8f7f] hover:bg-[#edf3f0]"
+                        className="flex h-11 w-11 items-center justify-center rounded-lg text-[#6f8f7f] hover:bg-[#F2F7F4]"
                         data-testid={`edit-product-${p.id}`}
                         aria-label="Edit"
                       >
@@ -359,7 +359,7 @@ const Inventory: React.FC = () => {
               <div className="space-y-2">
                 {form.items.map((it, idx) => (
                   <div key={idx} className="flex items-center gap-2">
-                    <div className="flex-1 rounded-lg border border-[#dfe7e1] bg-[#f6f8f6] px-3 py-2 text-sm">
+                    <div className="flex-1 rounded-lg border border-[#dfe7e1] bg-[#FAF8F3] px-3 py-2 text-sm">
                       {it.productName}
                     </div>
                     <input

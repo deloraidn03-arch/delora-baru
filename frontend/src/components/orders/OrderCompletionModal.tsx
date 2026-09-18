@@ -254,7 +254,7 @@ const OrderCompletionModal: React.FC<Props> = ({ orders, mode, onClose, onDone }
                 )}
                 <div className="space-y-2">
                   {(itemsByOrder[o.id] || []).map((it, idx) => (
-                    <div key={idx} className="grid grid-cols-2 gap-2 rounded-lg bg-[#f6f8f6] p-2 sm:grid-cols-4">
+                    <div key={idx} className="grid grid-cols-2 gap-2 rounded-lg bg-[#FAF8F3] p-2 sm:grid-cols-4">
                       <div className="col-span-2 sm:col-span-1">
                         <div className="text-sm font-medium">{it.itemName} × {it.qty}</div>
                         <div className="text-xs text-[#5c6f64]">Invoice: {formatIDR(getRequestItemSubtotal(it))}</div>
@@ -355,7 +355,7 @@ const OrderCompletionModal: React.FC<Props> = ({ orders, mode, onClose, onDone }
         )}
 
         {/* Ringkasan nominal ke penjualan — tiap komponen baris terpisah */}
-        <div className="space-y-1 rounded-lg bg-[#edf3f0] p-4 text-sm" data-testid="completion-summary">
+        <div className="space-y-1 rounded-lg bg-[#F2F7F4] p-4 text-sm" data-testid="completion-summary">
           <div className="flex justify-between">
             <span>Harga Jasa (setelah diskon)</span>
             <span>{formatIDR(summary.serviceFee)}</span>

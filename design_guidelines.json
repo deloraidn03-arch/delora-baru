@@ -1,150 +1,194 @@
 {
-  "project_info": {
-    "app_name": "Delora - Bloom & Gift",
-    "description": "A luxury, artisanal UMKM bookkeeping web app tailored for bouquet, floral arrangement, and custom gift businesses.",
-    "context": "saas_app / hybrid_fullstack bookkeeping application",
-    "design_archetype": "Organic & Earthy with Swiss Precision (Botanical Craft + High-Density Financial Utility)"
+  "project_name": "Delora — Bloom & Gift",
+  "app_type": "dashboard / saas_app",
+  "theme": "Light theme with botanical organic soft tones",
+  "archetype": "ORGANIC & EARTHY / BOTANICAL ARTISAN BOUTIQUE",
+  "brand_identity": {
+    "name": "Delora — Bloom & Gift",
+    "tone": "Artisanal, serene, warm, precise, modern Indonesian UMKM financial companion",
+    "logo_style": "Serif display 'DELORA' + script italic sub-brand 'Bloom & Gift'"
   },
-  "theme": {
-    "default_mode": "light",
-    "colors": {
-      "primary": {
-        "hex": "#8CAA9A",
-        "description": "Sage Green - Used for primary headers, navigation accents, main CTA buttons, active state indicators",
-        "foreground": "#FFFFFF"
+  "colors": {
+    "primary": {
+      "hex": "#8CAA9A",
+      "name": "Botanical Sage Green",
+      "hover": "#7A9988",
+      "active": "#6A8777",
+      "light": "#EBF2EE",
+      "tint_bg": "#F2F7F4"
+    },
+    "secondary_accent": {
+      "hex": "#E8D9B8",
+      "name": "Artisan Warm Cream Gold",
+      "hover": "#DCCB9F",
+      "light": "#FAF6ED",
+      "text": "#6B582C"
+    },
+    "dark_ink": {
+      "hex": "#2E3B34",
+      "name": "Deep Forest Slate Ink",
+      "muted": "#5C6E64",
+      "subtle": "#85978C"
+    },
+    "background": {
+      "page": "#FDFBF7",
+      "card": "#FFFFFF",
+      "sidebar": "#1F2823",
+      "sidebar_accent": "#2B3730",
+      "mobile_nav": "rgba(255, 255, 255, 0.85)"
+    },
+    "status": {
+      "unpaid_red": {
+        "bg": "#FDF2F2",
+        "border": "#F87171",
+        "text": "#991B1B",
+        "badge": "#FEE2E2"
       },
-      "accent": {
-        "hex": "#E8D9B8",
-        "description": "Warm Cream / Vintage Gold - Used for sub-brand 'Bloom & Gift' script text, highlight pills, badge borders, special status highlights",
-        "foreground": "#2E3B34"
+      "partial_yellow": {
+        "bg": "#FFFBEB",
+        "border": "#FBBF24",
+        "text": "#92400E",
+        "badge": "#FEF3C7"
       },
-      "dark_text": {
-        "hex": "#2E3B34",
-        "description": "Deep Forest Slate - Primary dark color for high contrast body text, headings, and key numeric figures",
-        "muted_text": "#5C6F64"
+      "paid_green": {
+        "bg": "#F0FDF4",
+        "border": "#4ADE80",
+        "text": "#166534",
+        "badge": "#DCFCE7"
       },
-      "surface": {
-        "background": "#F6F8F6",
-        "card_bg": "#FFFFFF",
-        "card_border": "#E2E8E4",
-        "modal_overlay": "rgba(46, 59, 52, 0.6)",
-        "sidebar_bg": "#1F2B24"
-      },
-      "status_colors": {
-        "success": {
-          "bg": "#E8F5E9",
-          "border": "#A5D6A7",
-          "text": "#2E7D32",
-          "label": "Lunas / Selesai / Pemasukan (Green)"
-        },
-        "warning": {
-          "bg": "#FFF8E1",
-          "border": "#FFE082",
-          "text": "#F57F17",
-          "label": "DP / Dalam Proses / Menunggu (Gold/Amber)"
-        },
-        "danger": {
-          "bg": "#FFEBEE",
-          "border": "#FFCDD2",
-          "text": "#C62828",
-          "label": "Stok Kritis / Pengeluaran / Batal / Belum Bayar (Red)"
-        },
-        "info": {
-          "bg": "#E3F2FD",
-          "border": "#90CAF9",
-          "text": "#1565C0",
-          "label": "Siap Kirim / Draft (Blue)"
-        }
+      "info_blue": {
+        "bg": "#EFF6FF",
+        "border": "#60A5FA",
+        "text": "#1E40AF",
+        "badge": "#DBEAFE"
       }
+    },
+    "borders": {
+      "default": "#E6E2D8",
+      "subtle": "#F0EDE6",
+      "focused": "#8CAA9A"
     }
   },
   "typography": {
-    "brand_heading": {
-      "family": "'Cormorant Garamond', 'Playfair Display', serif",
-      "weights": ["600", "700"],
-      "usage": "Main logo text ('Delora'), section titles, modal hero titles, invoice headers, and sub-brand script ('Bloom & Gift')"
+    "fonts": {
+      "heading_serif": "'Cormorant Garamond', 'Playfair Display', Georgia, serif",
+      "sub_script": "'Caveat', 'Dancing Script', cursive",
+      "body_sans": "'Plus Jakarta Sans', 'Outfit', system-ui, sans-serif",
+      "mono_numbers": "'JetBrains Mono', 'Source Code Pro', monospace"
     },
-    "body_ui": {
-      "family": "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
-      "weights": ["400", "500", "600", "700"],
-      "usage": "Data tables, form inputs, button labels, badges, financial numbers, tab navigation"
-    },
-    "mono": {
-      "family": "'JetBrains Mono', 'Fira Code', monospace",
-      "usage": "Invoice codes (e.g., DEL-2026-0891), order IDs, transaction references"
-    },
-    "type_scale": {
-      "h1_hero": "text-3xl md:text-5xl font-bold tracking-tight",
-      "h2_section": "text-2xl md:text-3xl font-semibold tracking-tight",
-      "h3_card": "text-lg md:text-xl font-medium",
-      "body": "text-sm md:text-base leading-relaxed",
-      "small_label": "text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+    "google_fonts_url": "https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap",
+    "scale": {
+      "h1_hero": "text-3xl sm:text-4xl lg:text-5xl font-serif font-bold tracking-tight text-[#2E3B34]",
+      "h2_section": "text-2xl sm:text-3xl font-serif font-semibold text-[#2E3B34]",
+      "h3_card": "text-lg sm:text-xl font-sans font-semibold text-[#2E3B34]",
+      "kpi_value": "text-2xl sm:text-3xl lg:text-4xl font-mono font-bold tracking-tight text-[#2E3B34]",
+      "body": "text-sm sm:text-base font-sans text-[#5C6E64]",
+      "caption": "text-xs font-sans text-[#85978C]",
+      "nav_label": "text-xs uppercase tracking-widest font-sans font-medium"
     }
   },
-  "layout_and_responsive": {
-    "navigation_strategy": {
-      "desktop": "Collapsible sticky sidebar on left with brand header, workspace tenant switcher, 8 menu navigation items with duotone icons, and quick action CTA button.",
-      "mobile": "Fixed top bar with Delora brand logo + tenant switcher, paired with a sticky bottom navigation bar (5 main quick-tabs + 'Lainnya' drawer for full 8 menus). Touch targets >= 44px."
+  "tokens": {
+    "border_radius": {
+      "card": "rounded-2xl",
+      "button": "rounded-xl",
+      "pill": "rounded-full",
+      "input": "rounded-xl",
+      "modal": "rounded-3xl sm:rounded-2xl"
     },
-    "grid_system": {
-      "dashboard_kpi": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6",
-      "form_grid": "grid-cols-1 md:grid-cols-12 gap-4",
-      "bento_features": "grid grid-cols-1 md:grid-cols-3 gap-6"
+    "shadows": {
+      "soft_layered": "0 4px 20px -2px rgba(46, 59, 52, 0.05), 0 2px 6px -1px rgba(46, 59, 52, 0.03)",
+      "card_hover": "0 12px 32px -4px rgba(46, 59, 52, 0.09), 0 4px 12px -2px rgba(46, 59, 52, 0.04)",
+      "modal": "0 24px 48px -12px rgba(31, 40, 35, 0.25)",
+      "floating_nav": "0 8px 32px 0 rgba(46, 59, 52, 0.12)"
     },
-    "responsive_tables": {
-      "desktop": "Standard dense HTML table with rounded borders, sticky header, multi-column metrics, and hover highlight.",
-      "mobile": "Transforms into vertical card list with clean visual separation, expandable details, and quick action buttons."
+    "glassmorphism": {
+      "mobile_nav": "backdrop-blur-xl bg-white/85 border border-white/40",
+      "sticky_header": "backdrop-blur-md bg-[#FDFBF7]/90 border-b border-[#E6E2D8]/60",
+      "modal_overlay": "backdrop-blur-sm bg-[#1F2823]/50"
     }
   },
-  "modules_specification": {
-    "1_dashboard": "KPI metrics (Omset Bulan Ini, Total Pesanan Active, High Margin Item, Alert Stok Kritis), revenue vs expense chart (Recharts bar/area), recent color-coded transactions (Hijau Pemasukan, Merah Pengeluaran), and quick action drawer.",
-    "2_inventory": "Product & raw material catalog (Bunga Mawar, Wrapping Paper, Ribbon, Flower Box, Custom Card), minimum stock alert banner (Latar Merah Soft + Red Border), stock status badges, add/edit modal with image preview.",
-    "3_biaya": "Expense tracker with IDR CurrencyInput, category filter (Bahan Baku, Operasional, Transport, Marketing), receipt upload preview, searchable vendor dropdown.",
-    "4_penjualan": "Sales record table, daily income summary, automatic posting integration from completed orders, IDR formatting.",
-    "5_pembelian": "Purchase order management for raw materials, supplier list, order status (Pending, Received, Paid).",
-    "6_pesanan": {
-      "description": "The flagship complex module featuring 5 distinct tabs and multi-item batch request capabilities.",
-      "tabs": [
-        {"id": "semua", "label": "Semua Pesanan", "badge": "List View & Grouped View"},
-        {"id": "bouquet_fresh", "label": "Bouquet Bunga Segar", "description": "Form custom komposisi bunga & pita"},
-        {"id": "bouquet_artificial", "label": "Bouquet Artificial / Money", "description": "Form pecahan uang & tipe awetan"},
-        {"id": "gift_box", "label": "Bloom Box & Gift Set", "description": "Form ukuran box & varian kado"},
-        {"id": "custom_event", "label": "Dekor & Custom Event", "description": "Form venue, tanggal acara & moodboard"}
-      ],
-      "key_features": [
-        "Dynamic multi-item row builder (Nama Item, Qty, Harga Invoice, Harga Asli, Subtotal calculation)",
-        "Batch multi-order single customer grouping (groupId expand/collapse UI)",
-        "Order status pills (Menunggu, Diproses, Merangkai, Siap Kirim, Selesai, Batal)",
-        "Payment status pills (Belum Bayar [Red], DP [Amber], Lunas [Green])",
-        "Quick View Modal with WhatsApp structured invoice message copy generator and PDF preview simulation",
-        "Order Completion Modal that posts sales to Penjualan and reduces Inventory stock automatically"
-      ]
+  "layout_and_navigation": {
+    "desktop_sidebar": {
+      "width": "w-64",
+      "bg": "bg-[#1F2823]",
+      "text": "text-slate-200",
+      "active_item": "bg-[#8CAA9A] text-white shadow-md rounded-xl font-medium",
+      "hover_item": "hover:bg-[#2B3730] hover:text-white rounded-xl transition-all duration-200",
+      "brand_section": "p-6 border-b border-[#2B3730] text-center sm:text-left"
     },
-    "7_customer": "Customer database (Regular, VIP, Corporate), transaction history per customer, birthday/anniversary reminder indicators.",
-    "8_aset_tetap": "Fixed assets ledger (Meja Merangkai, Mobil Operasional, Cold Storage, Scissors Set) with depreciation calculation table (Penyusutan Tahunan) and yearly preview chart."
+    "mobile_navigation": {
+      "bottom_bar": "fixed bottom-3 left-3 right-3 z-40 h-16 rounded-full backdrop-blur-xl bg-white/90 border border-[#E6E2D8] shadow-lg flex items-center justify-around px-3 md:hidden",
+      "drawer_modal": "full-screen or slide-over drawer with smooth transition",
+      "active_pill": "bg-[#8CAA9A]/15 text-[#2E3B34] p-2 rounded-full"
+    },
+    "responsive_rules": {
+      "tables": "Desktop: clean stripped/hover table with clear headers. Mobile (<= 768px): automatic conversion into styled card lists with clear badges and action buttons.",
+      "kpi_grids": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6",
+      "form_grids": "grid-cols-1 md:grid-cols-2 gap-4"
+    }
   },
-  "complex_components": {
-    "currency_input": "IDR formatted auto-parsing text input (e.g. typing 150000 renders as 'Rp 150.000')",
-    "group_order_accordion": "Expandable container displaying batch orders under 1 Customer with total aggregate price tag",
-    "quick_view_modal": "Slide-over or centered dialog showing order breakdown, WhatsApp shareable quote text, and printable invoice style",
-    "order_completion_modal": "Confirmation modal with toggle for 'Post ke Penjualan' and 'Potong Stok Otomatis' with line-item stock check"
+  "components": {
+    "kpi_cards": {
+      "wrapper": "bg-white p-6 rounded-2xl border border-[#E6E2D8] shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group",
+      "accent_bar": "absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#8CAA9A] to-[#E8D9B8]",
+      "icon_wrapper": "w-12 h-12 rounded-xl bg-[#F2F7F4] text-[#8CAA9A] flex items-center justify-center font-semibold"
+    },
+    "buttons": {
+      "primary": "bg-[#8CAA9A] hover:bg-[#7A9988] text-white font-medium px-5 py-2.5 rounded-xl transition-all duration-200 shadow-sm active:scale-95 flex items-center justify-center gap-2",
+      "secondary": "bg-[#FAF6ED] hover:bg-[#E8D9B8]/40 text-[#6B582C] font-medium px-5 py-2.5 rounded-xl border border-[#E8D9B8] transition-all duration-200 active:scale-95 flex items-center justify-center gap-2",
+      "outline": "bg-white hover:bg-[#F2F7F4] text-[#2E3B34] font-medium px-4 py-2 rounded-xl border border-[#E6E2D8] transition-all duration-200 flex items-center justify-center gap-2",
+      "danger": "bg-red-50 hover:bg-red-100 text-red-700 font-medium px-4 py-2 rounded-xl border border-red-200 transition-all duration-200 flex items-center justify-center gap-2"
+    },
+    "badges": {
+      "belum_lunas": "px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800 border border-red-200",
+      "setengah_lunas": "px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200",
+      "selesai_lunas": "px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200",
+      "stok_minimum": "px-3 py-1 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200 animate-pulse"
+    },
+    "modals": {
+      "container": "bg-white rounded-3xl md:rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-[#E6E2D8] max-h-[90vh] overflow-y-auto",
+      "mobile_fullscreen": "fixed inset-0 z-50 bg-white p-5 overflow-y-auto flex flex-col justify-between sm:static sm:h-auto sm:max-w-xl sm:rounded-2xl sm:shadow-2xl"
+    },
+    "forms": {
+      "input": "w-full bg-[#FDFBF7] border border-[#E6E2D8] rounded-xl px-4 py-2.5 text-[#2E3B34] focus:outline-none focus:ring-2 focus:ring-[#8CAA9A]/40 focus:border-[#8CAA9A] transition-all duration-200 placeholder:text-slate-400",
+      "currency_input": "w-full bg-[#FDFBF7] border border-[#E6E2D8] rounded-xl pl-10 pr-4 py-2.5 font-mono text-[#2E3B34] focus:outline-none focus:ring-2 focus:ring-[#8CAA9A]/40 focus:border-[#8CAA9A]",
+      "select": "w-full bg-[#FDFBF7] border border-[#E6E2D8] rounded-xl px-4 py-2.5 text-[#2E3B34] focus:outline-none focus:ring-2 focus:ring-[#8CAA9A]/40"
+    },
+    "charts": {
+      "recharts_area": "Primary stroke: #8CAA9A, fill gradient: #8CAA9A with opacity 0.25 to 0.05. Secondary stroke: #E8D9B8",
+      "tooltip": "bg-[#1F2823] text-white rounded-xl shadow-xl p-3 text-xs"
+    }
   },
-  "image_assets": {
-    "bouquet_fresh_rose": "https://images.unsplash.com/photo-1615363750824-e8c53205cde1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHxfMTc4OTY0OTU1MXww&ixlib=rb-4.1.0&q=85",
-    "gift_box_chrysanthemum": "https://images.pexels.com/photos/14275704/pexels-photo-14275704.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "luxury_ribbon_accent": "https://images.unsplash.com/photo-1668127039852-0e7c8b3a1601?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwyfHxmbG93ZXIlMjBib3VxdWV0JTIwZ2lmdCUyMGJveCUyMHJpYmJvbnxlbnwwfHx8fDE3ODk2NDk1NTF8MA&ixlib=rb-4.1.0&q=85",
-    "pink_present_rose": "https://images.pexels.com/photos/6532979/pexels-photo-6532979.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  "pages_guide": {
+    "Dashboard": "KPI Cards (Penjualan, Piutang, Kas/Bank, Stok Alert), 5 Panel Saldo Akun dengan icon botanical & border cream, Chart Penjualan vs Pengeluaran, Riwayat Transaksi Terbaru.",
+    "Inventory": "Banner Stok Minimum teratas (merah soft glowing), Switch/Filter Kategori Bouquet vs Materials, Quick Add Stock button, Table/Card list stok.",
+    "Expenses": "Quick Expense Form modal, Pie/Bar chart breakdown kategori biaya, Tabel Riwayat Biaya.",
+    "Sales": "4 Tab Form Penjualan (Standard, Pre-order, Instant, Custom Bouquet), Multi-item calculator, Tabel Riwayat Penjualan.",
+    "Purchases": "Modal 3 Tab Pembelian Bahan, Tabel Riwayat Pembelian & supplier details.",
+    "Orders": "5 Tab Form Pesanan Kompleks (Semua, DP/Belum, Diproses, Ready, Selesai), Grouped expand/collapse per status, Quick View Modal, Completion Modal.",
+    "Customers": "Grid Kartu Pelanggan dengan avatar inisial berwarna Sage/Cream, total piutang, dan riwayat pesanan.",
+    "FixedAssets": "Metode penyusutan aset tetap (garis lurus), tabel aset, kalkulasi akumulasi penyusutan.",
+    "CashBank": "Transfer antar kas/bank modal, panel 5 akun kas (Kas Utama, BCA, Mandiri, QRIS, E-Wallet), log mutasi."
   },
-  "testing_and_accessibility": {
-    "data_testid_convention": "All interactive elements (buttons, inputs, tabs, modals, tables, badges) MUST include descriptive kebab-case data-testid attributes (e.g., data-testid='pesanan-tab-bouquet-fresh', data-testid='btn-complete-order-101', data-testid='input-currency-harga-invoice').",
-    "touch_target_min": "44px height/width on all mobile buttons and navigation controls.",
-    "contrast_compliance": "High contrast ratio with sage green `#8CAA9A` header and `#2E3B34` text ensuring APCA/WCAG AA compliance."
+  "media_assets": {
+    "flower_workshop_1": "https://images.unsplash.com/photo-1544928147-79a2dbc1f389?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "flower_tools": "https://images.unsplash.com/photo-1782038522352-8984aa6773ed?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "bouquet_craft": "https://images.pexels.com/photos/5414028/pexels-photo-5414028.jpeg?auto=compress&cs=tinysrgb&q=85"
+  },
+  "testing_attributes": {
+    "rule": "Every button, link, tab, modal toggle, and form field MUST have a data-testid attribute in kebab-case.",
+    "examples": [
+      "data-testid=\"nav-dashboard-link\"",
+      "data-testid=\"order-completion-confirm-button\"",
+      "data-testid=\"sale-type-tab-preorder\"",
+      "data-testid=\"inventory-stock-warning-banner\"",
+      "data-testid=\"cash-bank-account-panel-bca\""
+    ]
   },
   "instructions_to_main_agent": [
-    "1. Read this guidelines file to ensure exact adherence to Delora brand rules, colors, and layout strategies.",
-    "2. Implement frontend components in .js/.jsx files inside `/app/frontend/src/`.",
-    "3. Use Tailwind CSS utility classes customized with Delora colors (#8CAA9A primary, #E8D9B8 accent, #2E3B34 dark text).",
-    "4. Ensure full testability by applying data-testid to every interactive component across all 8 menu screens.",
-    "5. Make sure the Pesanan module is fully functional with all 5 tabs, multi-item request rows, WhatsApp/PDF Quick View, and stock deduction Order Completion modal."
+    "Inject Google Fonts URL into index.html: Cormorant Garamond, Plus Jakarta Sans, Caveat, JetBrains Mono.",
+    "Ensure all interactive components use proper state & micro-animations with Framer Motion or smooth Tailwind transitions.",
+    "Apply testids to all interactive elements to support UI tests.",
+    "Maintain the light organic botanical feel with Sage Green (#8CAA9A), Cream (#E8D9B8), Forest Ink (#2E3B34) and warm backgrounds (#FDFBF7)."
   ]
 }

@@ -143,7 +143,7 @@ const Expenses: React.FC = () => {
     <div className="space-y-5" data-testid="expenses-page">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="font-brand text-3xl font-bold text-[#2e3b34]">Biaya</h1>
+          <h1 className="font-brand text-3xl font-bold tracking-tight text-[#2e3b34] sm:text-4xl">Biaya</h1>
           <p className="text-sm text-[#5c6f64]">Pengeluaran operasional non-produksi</p>
         </div>
         <div className="flex gap-2">
@@ -175,7 +175,7 @@ const Expenses: React.FC = () => {
         <div className="hidden md:block">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#e2e8e4] bg-[#f6f8f6] text-left text-xs uppercase tracking-wide text-[#5c6f64]">
+              <tr className="border-b border-[#e2e8e4] bg-[#FAF8F3] text-left text-xs uppercase tracking-wide text-[#5c6f64]">
                 <th className="px-4 py-3">Tanggal</th>
                 <th className="px-4 py-3">Akun Biaya</th>
                 <th className="px-4 py-3">Deskripsi</th>
@@ -186,7 +186,7 @@ const Expenses: React.FC = () => {
             </thead>
             <tbody>
               {rows.map((t) => (
-                <tr key={t.id} className="border-b border-[#eef2ef] hover:bg-[#f6f8f6]" data-testid={`expense-row-${t.id}`}>
+                <tr key={t.id} className="border-b border-[#eef2ef] hover:bg-[#FAF8F3]" data-testid={`expense-row-${t.id}`}>
                   <td className="px-4 py-3">{formatDate(t.date)}</td>
                   <td className="px-4 py-3 font-medium">{t.metadata?.expenseAccount}</td>
                   <td className="px-4 py-3 text-[#5c6f64]">{t.metadata?.description || '-'}</td>
@@ -194,7 +194,7 @@ const Expenses: React.FC = () => {
                   <td className="px-4 py-3 text-right font-bold text-[#c62828]">− {formatIDR(Math.abs(t.amount))}</td>
                   <td className="px-4 py-3">
                     <div className="flex justify-end gap-1">
-                      <button onClick={() => openEdit(t)} className="flex h-11 w-11 items-center justify-center rounded-lg text-[#6f8f7f] hover:bg-[#edf3f0]" data-testid={`edit-expense-${t.id}`} aria-label="Edit">
+                      <button onClick={() => openEdit(t)} className="flex h-11 w-11 items-center justify-center rounded-lg text-[#6f8f7f] hover:bg-[#F2F7F4]" data-testid={`edit-expense-${t.id}`} aria-label="Edit">
                         <Pencil size={16} />
                       </button>
                       <button onClick={() => setDeleteTarget(t)} className="flex h-11 w-11 items-center justify-center rounded-lg text-[#c62828] hover:bg-[#ffebee]" data-testid={`delete-expense-${t.id}`} aria-label="Hapus">

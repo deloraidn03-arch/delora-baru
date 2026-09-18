@@ -220,7 +220,7 @@ const OrderQuickViewModal: React.FC<Props> = ({ orders, onClose }) => {
           </div>
         ))}
 
-        <div className="space-y-1 rounded-lg bg-[#edf3f0] p-4 text-sm">
+        <div className="space-y-1 rounded-lg bg-[#F2F7F4] p-4 text-sm">
           <div className="flex justify-between">
             <span>Ongkir (Pengiriman)</span>
             <span>{formatIDR(agg.ongkir)}</span>

@@ -70,7 +70,7 @@ const Customers: React.FC = () => {
     <div className="space-y-5" data-testid="customers-page">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="font-brand text-3xl font-bold text-[#2e3b34]">Customer</h1>
+          <h1 className="font-brand text-3xl font-bold tracking-tight text-[#2e3b34] sm:text-4xl">Customer</h1>
           <p className="text-sm text-[#5c6f64]">Basis data pelanggan — dipakai lintas menu (Penjualan &amp; Pesanan)</p>
         </div>
         <button onClick={openAdd} className="btn-primary" data-testid="add-customer-button">

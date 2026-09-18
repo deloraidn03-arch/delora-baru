@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Package,
@@ -29,8 +29,8 @@ const NAV_ITEMS = [
 
 const Brand: React.FC = () => (
   <div className="select-none">
-    <div className="font-brand text-2xl font-bold tracking-[0.18em] text-white">DELORA</div>
-    <div className="font-brand text-sm italic text-[#e8d9b8]">— Bloom &amp; Gift —</div>
+    <div className="font-brand text-[26px] font-bold leading-none tracking-[0.22em] text-white">DELORA</div>
+    <div className="font-script mt-1.5 text-xl leading-none text-[#E8D9B8]">Bloom &amp; Gift</div>
   </div>
 );
 
@@ -38,6 +38,7 @@ const Layout: React.FC = () => {
   const { signOut, user } = useAuth();
   const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const location = useLocation();
 
   const handleSignOut = async () => {
     await signOut();
@@ -45,9 +46,9 @@ const Layout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f6f8f6]">
+    <div className="min-h-screen bg-[#FDFBF7]">
       {/* Sidebar desktop */}
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col bg-[#1f2b24] md:flex">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col bg-[#1F2823] shadow-[4px_0_24px_-8px_rgba(31,40,35,0.45)] md:flex">
         <div className="border-b border-white/10 px-5 py-6">
           <Brand />
         </div>
@@ -59,8 +60,8 @@ const Layout: React.FC = () => {
               end={item.end}
               data-testid={`nav-${item.label.toLowerCase().replace(/[^a-z]/g, '-')}`}
               className={({ isActive }) =>
-                `flex min-h-[44px] items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                  isActive ? 'bg-[#8caa9a] text-white' : 'text-[#b9c8bf] hover:bg-white/5 hover:text-white'
+                `flex min-h-[44px] items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-all duration-200 ${
+                  isActive ? 'bg-[#8CAA9A] text-white shadow-md' : 'text-[#AFC0B4] hover:bg-[#2B3730] hover:text-white'
                 }`
               }
             >
@@ -82,7 +83,7 @@ const Layout: React.FC = () => {
       </aside>
 
       {/* Top bar mobile */}
-      <header className="sticky top-0 z-30 flex items-center justify-between bg-[#1f2b24] px-4 py-3 md:hidden">
+      <header className="sticky top-0 z-30 flex items-center justify-between bg-[#1F2823]/95 px-4 py-3 shadow-md backdrop-blur-md md:hidden">
         <Brand />
         <button
           onClick={() => setDrawerOpen(true)}
@@ -96,9 +97,9 @@ const Layout: React.FC = () => {
 
       {/* Drawer mobile (semua menu) */}
       {drawerOpen && (
-        <div className="fixed inset-0 z-50 bg-[#2e3b34]/60 md:hidden" onClick={() => setDrawerOpen(false)}>
+        <div className="fixed inset-0 z-50 bg-[#1F2823]/50 backdrop-blur-sm md:hidden" onClick={() => setDrawerOpen(false)}>
           <div
-            className="absolute inset-y-0 left-0 flex w-72 flex-col bg-[#1f2b24]"
+            className="animate-modal absolute inset-y-0 left-0 flex w-72 flex-col bg-[#1F2823] shadow-2xl"
             onClick={(e) => e.stopPropagation()}
             data-testid="mobile-drawer"
           >
@@ -114,8 +115,8 @@ const Layout: React.FC = () => {
                   onClick={() => setDrawerOpen(false)}
                   data-testid={`drawer-nav-${item.label.toLowerCase().replace(/[^a-z]/g, '-')}`}
                   className={({ isActive }) =>
-                    `flex min-h-[44px] items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                      isActive ? 'bg-[#8caa9a] text-white' : 'text-[#b9c8bf] hover:bg-white/5 hover:text-white'
+                    `flex min-h-[44px] items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-all duration-200 ${
+                      isActive ? 'bg-[#8CAA9A] text-white shadow-md' : 'text-[#AFC0B4] hover:bg-[#2B3730] hover:text-white'
                     }`
                   }
                 >
@@ -138,12 +139,17 @@ const Layout: React.FC = () => {
       )}
 
       {/* Konten */}
-      <main className="px-4 pb-24 pt-4 sm:px-6 md:ml-64 md:px-8 md:pb-10 md:pt-8">
-        <Outlet />
+      <main className="px-4 pb-28 pt-5 sm:px-6 md:ml-64 md:px-8 md:pb-12 md:pt-8">
+        <div key={location.pathname} className="animate-fade-up mx-auto max-w-[1400px]">
+          <Outlet />
+        </div>
       </main>
 
       {/* Bottom nav mobile */}
-      <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-[#dfe7e1] bg-white pb-[env(safe-area-inset-bottom)] md:hidden">
+      <nav
+        className="fixed bottom-3 left-3 right-3 z-30 grid h-16 grid-cols-5 items-center gap-1 rounded-full border border-[#E6E2D8] bg-white/90 px-2 shadow-[0_8px_32px_0_rgba(46,59,52,0.12)] backdrop-blur-xl md:hidden"
+        style={{ marginBottom: 'env(safe-area-inset-bottom)' }}
+      >
         {[
           { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
           { to: '/pesanan', label: 'Pesanan', icon: ClipboardList },
@@ -156,8 +162,8 @@ const Layout: React.FC = () => {
             end={item.end}
             data-testid={`bottomnav-${item.label.toLowerCase()}`}
             className={({ isActive }) =>
-              `flex min-h-[56px] flex-col items-center justify-center gap-1 text-[11px] font-medium transition-colors ${
-                isActive ? 'text-[#6f8f7f]' : 'text-[#93a298]'
+              `flex min-h-[48px] flex-col items-center justify-center gap-0.5 rounded-full px-1 text-[11px] font-medium transition-all duration-200 ${
+                isActive ? 'bg-[#8CAA9A]/15 text-[#5F7F70]' : 'text-[#85978C]'
               }`
             }
           >
@@ -167,7 +173,7 @@ const Layout: React.FC = () => {
         ))}
         <button
           onClick={() => setDrawerOpen(true)}
-          className="flex min-h-[56px] flex-col items-center justify-center gap-1 text-[11px] font-medium text-[#93a298]"
+          className="flex min-h-[48px] flex-col items-center justify-center gap-0.5 rounded-full text-[11px] font-medium text-[#85978C] transition-all duration-200"
           data-testid="bottomnav-lainnya"
         >
           <Menu size={20} />

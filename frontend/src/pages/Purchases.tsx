@@ -253,7 +253,7 @@ const Purchases: React.FC = () => {
     <div className="space-y-5" data-testid="purchases-page">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="font-brand text-3xl font-bold text-[#2e3b34]">Pembelian</h1>
+          <h1 className="font-brand text-3xl font-bold tracking-tight text-[#2e3b34] sm:text-4xl">Pembelian</h1>
           <p className="text-sm text-[#5c6f64]">Pembelian bahan, kebutuhan pesanan, dan aset</p>
         </div>
         <button onClick={openModal} className="btn-primary" data-testid="add-purchase-button">
@@ -265,7 +265,7 @@ const Purchases: React.FC = () => {
         <div className="hidden md:block">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#e2e8e4] bg-[#f6f8f6] text-left text-xs uppercase tracking-wide text-[#5c6f64]">
+              <tr className="border-b border-[#e2e8e4] bg-[#FAF8F3] text-left text-xs uppercase tracking-wide text-[#5c6f64]">
                 <th className="px-4 py-3">Tanggal</th>
                 <th className="px-4 py-3">Item</th>
                 <th className="px-4 py-3">Jenis</th>
@@ -279,7 +279,7 @@ const Purchases: React.FC = () => {
               {history.map((t) => {
                 const isAsset = t.metadata?.is_asset === true || t.metadata?.is_asset === 'true';
                 return (
-                  <tr key={t.id} className="border-b border-[#eef2ef] hover:bg-[#f6f8f6]" data-testid={`purchase-row-${t.id}`}>
+                  <tr key={t.id} className="border-b border-[#eef2ef] hover:bg-[#FAF8F3]" data-testid={`purchase-row-${t.id}`}>
                     <td className="px-4 py-3">{formatDate(t.date)}</td>
                     <td className="px-4 py-3 font-medium">{t.metadata?.productName}</td>
                     <td className="px-4 py-3">
@@ -289,7 +289,7 @@ const Purchases: React.FC = () => {
                             ? 'bg-[#e8d9b8] text-[#6b5a2e]'
                             : t.type === 'purchase_custom'
                             ? 'bg-[#e3f2fd] text-[#1565c0]'
-                            : 'bg-[#edf3f0] text-[#6f8f7f]'
+                            : 'bg-[#F2F7F4] text-[#6f8f7f]'
                         }`}
                       >
                         {isAsset ? 'Aset Tetap' : t.type === 'purchase_custom' ? 'Custom Request' : 'Bahan Baku'}
@@ -346,12 +346,12 @@ const Purchases: React.FC = () => {
 
       {/* Modal Tambah Pembelian — 3 tab */}
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Tambah Pembelian" wide data-testid="purchase-modal">
-        <div className="grid grid-cols-3 gap-1 rounded-lg bg-[#edf3f0] p-1">
+        <div className="grid grid-cols-3 gap-1.5 rounded-2xl bg-[#F2F7F4] p-1.5">
           {tabs.map((t) => (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`min-h-[44px] rounded-md text-xs font-semibold transition-colors sm:text-sm ${
+              className={`min-h-[44px] rounded-xl text-xs font-semibold transition-all duration-200 sm:text-sm ${
                 tab === t.id ? 'bg-white text-[#2e3b34] shadow-sm' : 'text-[#5c6f64]'
               }`}
               data-testid={`purchase-tab-${t.id}`}
@@ -418,7 +418,7 @@ const Purchases: React.FC = () => {
               <label className="label-base">Sumber Dana</label>
               {accountSelect(formMaterial.paymentAccount, (v) => setFormMaterial({ ...formMaterial, paymentAccount: v }), 'purchase-account-select')}
             </div>
-            <div className="rounded-lg bg-[#edf3f0] px-4 py-3 text-xs text-[#5c6f64] sm:col-span-2">
+            <div className="rounded-lg bg-[#F2F7F4] px-4 py-3 text-xs text-[#5c6f64] sm:col-span-2">
               Stok bahan akan <strong>bertambah</strong> sebesar qty pembelian.
             </div>
             <div className="sm:col-span-2">
@@ -543,7 +543,7 @@ const Purchases: React.FC = () => {
               <label className="label-base">Sumber Dana</label>
               {accountSelect(formAsset.paymentAccount, (v) => setFormAsset({ ...formAsset, paymentAccount: v }), 'purchase-asset-account-select')}
             </div>
-            <div className="rounded-lg bg-[#edf3f0] px-4 py-3 text-xs text-[#5c6f64] sm:col-span-2">
+            <div className="rounded-lg bg-[#F2F7F4] px-4 py-3 text-xs text-[#5c6f64] sm:col-span-2">
               Pembelian aset <strong>dikecualikan dari Biaya Produksi</strong>; bebannya masuk laba lewat penyusutan
               bulanan (saldo menurun).
             </div>

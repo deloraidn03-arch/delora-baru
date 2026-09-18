@@ -35,11 +35,11 @@ export function paymentStatusOf(order: Order): 'Lunas' | 'DP' | 'Belum' {
 }
 
 export const STATUS_COLORS: Record<string, string> = {
-  Selesai: 'bg-[#e8f5e9] text-[#2e7d32] border border-[#a5d6a7]',
-  Lunas: 'bg-[#e8f5e9] text-[#2e7d32] border border-[#a5d6a7]',
-  Setengah: 'bg-[#fff8e1] text-[#f57f17] border border-[#ffe082]',
-  DP: 'bg-[#fff8e1] text-[#f57f17] border border-[#ffe082]',
-  Belum: 'bg-[#ffebee] text-[#c62828] border border-[#ffcdd2]',
+  Selesai: 'bg-emerald-100 text-emerald-800 border border-emerald-200',
+  Lunas: 'bg-emerald-100 text-emerald-800 border border-emerald-200',
+  Setengah: 'bg-amber-100 text-amber-800 border border-amber-200',
+  DP: 'bg-amber-100 text-amber-800 border border-amber-200',
+  Belum: 'bg-red-100 text-red-800 border border-red-200',
 };
 
 export const groupIdOf = (o: Order): string => o.metadata?.groupId || o.id;
