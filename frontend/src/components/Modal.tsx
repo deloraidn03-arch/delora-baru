@@ -12,6 +12,16 @@ interface Props {
 
 // Modal responsif: full-screen di HP, centered dialog di desktop
 export const Modal: React.FC<Props> = ({ open, onClose, title, children, wide, ...rest }) => {
+  // Tutup modal dengan tombol Escape (aksesibilitas keyboard)
+  React.useEffect(() => {
+    if (!open) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [open, onClose]);
+
   if (!open) return null;
   return (
     <div

@@ -118,6 +118,13 @@ const Purchases: React.FC = () => {
     }
     await adjustAccountBalance(user.id, formMaterial.paymentAccount, -Math.abs(formMaterial.totalPayment));
     await adjustProductStock(product.id, formMaterial.quantity); // stok bahan BERTAMBAH
+    // Bahan baru: derive HPP otomatis dari totalPayment/qty bila belum ada
+    if (!(product.hpp > 0) && formMaterial.quantity > 0) {
+      await supabase
+        .from('products')
+        .update({ hpp: Math.round(formMaterial.totalPayment / formMaterial.quantity) })
+        .eq('id', product.id);
+    }
     toast.success('Pembelian bahan baku dicatat — stok bertambah');
     setSaving(false);
     setModalOpen(false);

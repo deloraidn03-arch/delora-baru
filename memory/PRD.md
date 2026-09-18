@@ -19,12 +19,15 @@ Web app pembukuan UMKM bouquet & custom product sesuai dokumen kerja v3, stack R
 - 9 halaman: Dashboard (KPI, kas & saldo, grafik recharts, riwayat berwarna), Inventory (stok min ⚠️, sort, komponen custom), Biaya (akun biaya, ringkasan, reverse saldo saat edit/hapus), Penjualan (4 tab: Produk/Custom/Bouquet/TopUp + riwayat + edit reverse), Pembelian (3 tab: Bahan Baku +stok / Custom Request tanpa stok / Aset Tetap is_asset), Pesanan (5 tab, batch pending orders, groupId expand/collapse, Quick View WA+PDF, Completion Modal posting+potong stok, hapus item/group, bulk delete by status, popover pecahan uang), Customer, Aset Tetap (3 trigger penyusutan, preview tahunan, riwayat), Kas & Bank (transfer amount 0 + modal masuk).
 - Terverifikasi: build Vite sukses, halaman login render desktop+mobile tanpa overflow.
 
-## Status Integrasi (2026-09-18, UPDATE)
+## Status Integrasi (2026-09-18, FINAL)
 - VITE_SUPABASE_URL & VITE_SUPABASE_ANON_KEY terpasang (project arjbgfddplivkhzootzr).
 - Skema DB jalan di Supabase user (11 tabel + RPC username_available terverifikasi 200).
-- Edge Function `login-with-username` SUDAH di-deploy agent via CLI (v2.117.0, --no-verify-jwt) — terverifikasi: 401 username salah, 200 + session untuk delora (email sudah terverifikasi).
+- Edge Function `login-with-username` SUDAH di-deploy agent via CLI (v2.117.0, --no-verify-jwt) — terverifikasi 200 + session.
 - Supabase Personal Access Token dipakai sekali untuk deploy; user disarankan revoke token `sbp_...086b` di dashboard/account/tokens.
-- SEMUA BLOCKER SELESAI → testing agent E2E dijalankan.
+- TESTING E2E LENGKAP (2 iterasi, ~95% pass): login, dashboard, kas/bank, inventory, biaya, penjualan (4 tab + edit reverse), pembelian (3 tab + is_asset exclusion), pesanan end-to-end (batch multi-order, groupId, Quick View WA, edit, completion posting nominal EXACT 152k, stok terpotong, hapus item tidak cascade), aset penyusutan saldo menurun backdated, customer auto-create via combobox, responsif 390px.
+- Fix pasca-test: bulk delete by status baca status fresh dari DB per-order; group badge pakai order created_at pertama; fallback clipboard WA (execCommand); tutup modal dengan Escape; HPP bahan baru auto-derive totalPayment/qty; combobox role=combobox/option + Enter-to-create.
+- Login E2E browser terverifikasi (delora / Delora2026!) — dashboard & pesanan render dengan data nyata, mobile 390px tanpa overflow.
+- Catatan by design: saldo akun kas boleh negatif (arus kas owner bebas).
 
 ## Backlog (P0/P1/P2)
 - P0: User verifikasi email + deploy edge function → testing agent E2E (login→semua menu→9 aturan lintas-menu).

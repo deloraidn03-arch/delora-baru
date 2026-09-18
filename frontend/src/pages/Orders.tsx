@@ -601,12 +601,15 @@ const Orders: React.FC = () => {
   };
 
   const handleBulkDelete = async () => {
-    const targets = orders.filter((o) => o.status === bulkDeleteStatus);
+    if (!user) return toast.error('User not authenticated');
+    // Baca status terbaru langsung dari DB (per-order, bukan level group)
+    const { data } = await supabase.from('orders').select('id, status').eq('user_id', user.id);
+    const targets = (data || []).filter((o: any) => o.status === bulkDeleteStatus);
     if (!targets.length) {
       setBulkConfirm(false);
       return toast.error('Tidak ada pesanan dengan status tersebut');
     }
-    await deleteOrderAndItems(targets.map((o) => o.id));
+    await deleteOrderAndItems(targets.map((o: any) => o.id));
     toast.success(`${targets.length} pesanan berstatus "${bulkDeleteStatus}" dihapus`);
     setBulkConfirm(false);
     refreshData();
@@ -637,7 +640,14 @@ const Orders: React.FC = () => {
       if (!map.has(gid)) map.set(gid, []);
       map.get(gid)!.push(o);
     }
-    return Array.from(map.entries());
+    // Urutkan pesanan dalam group by created_at: order pertama (pemegang ongkir/DP) selalu group[0]
+    const entries = Array.from(map.entries());
+    for (const [, g] of entries) {
+      g.sort((a, b) =>
+        String((a as any).created_at || a.order_date).localeCompare(String((b as any).created_at || b.order_date))
+      );
+    }
+    return entries;
   }, [orders, filterText, sortBy]);
 
   // Popover ringkasan pecahan uang untuk money bouquet yang masih aktif (belum di-post)

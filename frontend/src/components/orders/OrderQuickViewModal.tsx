@@ -75,11 +75,26 @@ const OrderQuickViewModal: React.FC<Props> = ({ orders, onClose }) => {
   };
 
   const handleCopy = async () => {
+    const text = buildWhatsAppMessage();
     try {
-      await navigator.clipboard.writeText(buildWhatsAppMessage());
+      await navigator.clipboard.writeText(text);
       toast.success('Pesan WhatsApp disalin');
     } catch {
-      toast.error('Gagal menyalin pesan');
+      // Fallback untuk konteks tanpa Clipboard API (http/iframe/headless)
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        toast.success('Pesan WhatsApp disalin');
+      } catch {
+        toast.error('Gagal menyalin pesan');
+      }
     }
   };
 

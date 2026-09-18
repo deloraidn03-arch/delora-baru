@@ -1,0 +1,38 @@
+{
+  "summary": "Iterasi 2 E2E testing PASSED (~95%). Semua flow inti berjalan sesuai spec: CustomerCombobox create-by-typing (Rina & Sari), Pembelian Bahan Baku (Kertas Kado 20@100k) & Custom Request (75k tidak menambah stok), Pesanan batch multi-order (Money Bouquet + Bouquet Custom Sari total 630k dengan DP 300k), Group table view + expand, Quick View (grand 630k, sisa 330k) + copy WA button hadir, Edit pesanan (jasa 50→60k, grand 640k), Status change toast warning, Add item ke group (Flower Bouquet Mawar segar 30k → 3 items 670k), Completion Modal + Post ke Penjualan (nominal 152.000 exact match, stok Kertas Kado 20→17, sale tercatat Rp 152k customer Sari, group Lunas), Hapus Item (tidak cascade — group jadi 2 items), Sale Edit reverse (10k→15k → cash +5k differential), Biaya delete reversal (25k out, back in). Saldo akhir Cash −588.000 & ATM 500.000 = MATCH ekspektasi manual.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "OrderQuickViewModal - Salin Pesan WhatsApp", "issue": "Toast 'Gagal menyalin pesan' saat klik quickview-copy-wa. Kemungkinan Clipboard API tidak tersedia di iframe/headless atau butuh user gesture. Perlu fallback (execCommand copy atau textarea select). Untuk user real di https bisa saja bekerja, tapi test tidak bisa validasi.", "selector": "[data-testid='quickview-copy-wa']", "priority": "MEDIUM"},
+      {"component": "Modal close on Escape", "issue": "Menekan tombol Escape tidak menutup OrderQuickViewModal (harus klik X). Aksesibilitas keyboard.", "selector": "[data-testid='order-quickview-modal']", "priority": "LOW"},
+      {"component": "Group payment badge after add-item", "issue": "Setelah 'Tambah Item ke Group', badge Status Bayar group menampilkan 'Belum' padahal order pertama tetap DP/Setengah. Diduga karena group[0] berubah setelah reorder. Cosmetic - Quick View & Post tetap benar (Sisa 330k → 0 setelah Post).", "selector": "tbody tr", "priority": "LOW"}
+    ],
+    "integration_issues": [
+      {"flow": "Bulk delete by status Selesai", "issue": "Setelah set 1 order ke status 'Selesai' via order-status-<id>, klik Hapus by Status → toast 'Tidak ada pesanan dengan status tersebut'. Kemungkinan status change tidak persisted, atau bulk delete lookup mismatch (mungkin baca status per group bukan per order). Perlu investigasi.", "affected_selectors": ["[data-testid='orders-bulk-delete-button']", "[data-testid='order-status-']"]}
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Investigate bulk-delete-by-status: pastikan filter menggunakan status per-order (bukan group-level) dan set-status via select benar-benar persist ke DB.",
+    "Perbaiki 'Salin Pesan WhatsApp': tambahkan fallback clipboard (document.execCommand('copy') atau share via URL) agar tidak 'Gagal menyalin' di lingkungan tanpa navigator.clipboard.",
+    "Group badge: tampilkan status bayar berdasarkan order dengan groupIndex=0 (bukan sort-order[0]), atau agregasi jelas (mis. 'Sebagian DP').",
+    "Escape key handler pada Modal untuk close (aksesibilitas).",
+    "(Enhancement) Bahan Baku baru via Pembelian: auto-derive HPP = totalPayment / qty (saat ini Kertas Kado tercipta dengan HPP=0)."
+  ],
+  "critical_code_review_comments": [
+    "SearchableSelect + CustomerCombobox: implementasi allowCreate solid, ada data-testid pada input search & tombol create → E2E friendly.",
+    "OrderCompletionModal: rumus Nominal ke Penjualan = jasa + invoice − harga_asli + ongkir MATCH SPEC EXACT (115k+35k-18k+20k=152k terverifikasi).",
+    "Reverse-on-edit & delete konsisten di Sales, Expenses, Purchases (test manual saldo end-to-end match).",
+    "Batch order: shared customer & deadline auto-fill saat pindah tab bekerja sempurna; ongkir & DP hanya di order pertama; total pending accurate.",
+    "Kelemahan minor: Kertas Kado tercipta dengan HPP 0 saat pembelian bahan baru (auto-set HPP dari totalPayment/qty akan lebih ramah user)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (Supabase RLS, no FastAPI)", "frontend": "~95% (semua critical path lulus; 1 integration issue bulk-delete Selesai + 2 UX minor)"},
+  "test_credentials": "delora / Delora2026!",
+  "seed_data_creation": "Customer Rina (via Sales combobox) & Sari (via Orders combobox). Sale Wrapping Paper Rp 15.000 customer Rina (setelah edit 10k→15k). Purchase Bahan Baku Kertas Kado qty 20 Rp 100.000. Purchase Custom Request 'Bunga khusus pesanan' Rp 75.000. Group order Sari: Money Bouquet (50k×10 lbr uang + Pita 15k invoice/10k asli + jasa 60k setelah edit) & Bouquet Custom (Kartu ucapan 2×10k invoice/4k asli + jasa 25k). Sale Rp 152.000 customer Sari hasil Post ke Penjualan. Akun biaya 'Transport' (biaya sudah dihapus).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Saldo akhir setelah iterasi 2: Cash −Rp 588.000, ATM Rp 500.000, lainnya Rp 0. Inventory: Wrapping Paper 7, Pita Satin 1, Kertas Kado 17 (HPP 0). Order aktif: Sari 2 item (setelah delete Mawar segar dari group) — status Setengah Jadi, bayar Lunas. Sales history 3 rows. Customer: Rina, Sari. Akun biaya: Listrik, Transport (kosong).",
+  "rca of the issue": "Bulk delete Selesai gagal: kemungkinan (a) bulk logic memfilter berdasar groupStatus (fungsi groupStatus mengembalikan minimum status seluruh grup — 1 item Selesai + lainnya Setengah/Belum → tidak dianggap Selesai), atau (b) select_option pada order-status-<id> gagal persist saat test. Cek Orders.tsx handleBulkDelete: harus loop order individual, bukan filter group."
+}
