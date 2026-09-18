@@ -1,0 +1,39 @@
+{
+  "summary": "First E2E smoke test of Delora Bloom & Gift. Login, Dashboard, Kas & Bank (Modal Masuk + Transfer), Inventory (add + low-stock banner + sort), Biaya (new account + txn + cash reverse), Pembelian Aset Tetap backdated (Printer Canon 01 Apr 2026), Aset (penyusutan saldo menurun), Penjualan Produk (stok berkurang + saldo bertambah + profit), Customer, dan responsive 390px semuanya bekerja sesuai spesifikasi. Pesanan multi-tab (Money/Bouquet/Flower/Custom/Semua) belum diuji karena kompleksitas alur multi-step; direkomendasikan pengujian manual atau iterasi lanjutan.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "CustomerCombobox on /penjualan (Produk tab)", "issue": "Automated typing ke sale-customer-input (BUTTON popover) tidak menghasilkan opsi 'Buat baru' yang bisa diklik lewat get_by_text. Hasilnya penjualan tersimpan dengan customer '-' dan record customer baru TIDAK terbuat di menu Customer. Perlu diverifikasi manual apakah user real bisa mengetik nama & tekan Enter untuk auto-create; jika ya, tambahkan data-testid pada inner input & option 'Buat baru' agar dapat diuji.", "selector": "[data-testid='sale-customer-input']", "priority": "MEDIUM"}
+    ],
+    "integration_issues": [
+      {"flow": "Cash overspend", "issue": "Saldo Cash bisa negatif (-Rp 600.000 setelah beli aset 2jt dari cash 1.4jt). Tidak ada guard/warning. Bila memang by design (owner cash flow bebas), abaikan; kalau tidak, perlu validasi min-saldo atau minimal toast peringatan.", "affected_selectors": ["[data-testid='saldo-cash']"]}
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Verifikasi manual: CustomerCombobox pada /penjualan & /pesanan bisa 'ketik nama baru + Enter/klik Buat' → customer otomatis muncul di /customer.",
+    "Pertimbangkan tambah data-testid pada elemen dalam combobox (input & opsi 'Buat baru') supaya bisa E2E ditest.",
+    "Test manual/lanjutan untuk flow Pesanan Money Bouquet + Bouquet Custom batch, ongkir/DP, Quick View, Edit, Completion Modal & Post ke Penjualan — belum tercover di iterasi ini.",
+    "(Optional) tambahkan validasi/warning saat saldo akun akan negatif."
+  ],
+  "critical_code_review_comments": [
+    "Semua data-testid yang disebut di spec sudah ada dan sesuai; struktur navigasi & tab konsisten.",
+    "Aset Tetap: penyusutan saldo menurun terbukti benar — Printer Canon 2jt @ 50% dibeli 01 Apr 2026, nilai buku bulan Sep = Rp 1.616.639, penyusutan bulan berjalan Rp 70.289. Sudah cap di nilai sisa 100.000 (dari kartu ringkasan).",
+    "Biaya Produksi dashboard mengecualikan pembelian aset (verified: Rp 0 setelah pembelian aset 2jt).",
+    "Cash flow reverse-on-add & reverse-on-delete berfungsi untuk Modal Masuk, Transfer, Biaya, Aset, dan Penjualan Produk (dihitung dari perubahan saldo yang match ekspektasi).",
+    "Sales produk: stok berkurang tepat (10→8), profit dihitung benar ((10000-5000)*2 = 10.000).",
+    "Mobile responsif 390px: tidak ada horizontal overflow di /, /pesanan, /penjualan, /inventory. Bottom nav muncul."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (Supabase-only)", "frontend": "~80% (fitur inti verified; Pesanan multi-step belum diuji end-to-end)"},
+  "test_credentials": "username=delora / password=Delora2026! (login-with-username Edge Function OK, email sudah verified)",
+  "seed_data_creation": "Modal Masuk Cash Rp 2.000.000; Transfer 500rb cash→atm; Produk 'Wrapping Paper' (hpp5k jual10k stok10 min3) & 'Pita Satin' (hpp2k jual5k stok1 min5); Akun Biaya 'Listrik' + biaya Rp 100.000 dari cash; Aset 'Printer Canon' (Elektronik, 2jt, 01-Apr-2026, rate 50%, sisa 100k) dari cash; 1 Penjualan Wrapping Paper qty2 harga10k Cash (customer kosong karena bug combobox).",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Saldo saat ini: Cash -Rp 580.000, ATM/Bank Rp 500.000, Tabungan/BRILink 0. Inventory: Wrapping Paper stok=8, Pita Satin stok=1 (low). Sudah ada 1 penjualan produk & 1 aset Printer Canon aktif dgn penyusutan 70.289/bulan. Iterasi berikutnya fokus ke: (1) Pesanan Money Bouquet + Bouquet Custom batch flow lengkap, (2) OrderQuickView WhatsApp copy, (3) OrderCompletionModal 'Post ke Penjualan', (4) Sales edit reverse, (5) Purchase Bahan Baku + Custom Request tabs, (6) Delete expense reversal, (7) verifikasi konsistensi saldo total setelah full run.",
+  "rca of the issue": "CustomerCombobox pada Sales/Orders di-render sebagai <button> popover (bukan input native) tanpa data-testid internal untuk field pencarian atau opsi 'Buat baru'. Playwright tidak bisa reliably fill/click. Perlu ekspos data-testid tambahan atau kondisi 'Buat baru' berupa <div role=option> agar page.get_by_role('option') bisa memicu creation."
+}

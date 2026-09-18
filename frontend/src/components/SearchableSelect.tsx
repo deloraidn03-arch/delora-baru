@@ -56,6 +56,8 @@ export const SearchableSelect: React.FC<Props> = ({
     <div ref={ref} className="relative">
       <button
         type="button"
+        role="combobox"
+        aria-expanded={open}
         disabled={disabled}
         onClick={() => {
           setOpen((v) => !v);
@@ -77,6 +79,21 @@ export const SearchableSelect: React.FC<Props> = ({
               autoFocus
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key !== 'Enter') return;
+                e.preventDefault();
+                const exact = options.find((o) => o.label.toLowerCase() === query.trim().toLowerCase());
+                if (exact) {
+                  onChange(exact.value, exact.label);
+                  setOpen(false);
+                } else if (allowCreate && query.trim()) {
+                  onCreate?.(query.trim());
+                  setOpen(false);
+                } else if (filtered.length) {
+                  onChange(filtered[0].value, filtered[0].label);
+                  setOpen(false);
+                }
+              }}
               placeholder="Cari…"
               className="h-9 w-full bg-transparent text-sm focus:outline-none"
               data-testid={`${rest['data-testid'] || 'select'}-search`}
@@ -87,6 +104,8 @@ export const SearchableSelect: React.FC<Props> = ({
               <button
                 key={o.value}
                 type="button"
+                role="option"
+                aria-selected={o.value === value}
                 onClick={() => {
                   onChange(o.value, o.label);
                   setOpen(false);

@@ -19,12 +19,12 @@ Web app pembukuan UMKM bouquet & custom product sesuai dokumen kerja v3, stack R
 - 9 halaman: Dashboard (KPI, kas & saldo, grafik recharts, riwayat berwarna), Inventory (stok min ⚠️, sort, komponen custom), Biaya (akun biaya, ringkasan, reverse saldo saat edit/hapus), Penjualan (4 tab: Produk/Custom/Bouquet/TopUp + riwayat + edit reverse), Pembelian (3 tab: Bahan Baku +stok / Custom Request tanpa stok / Aset Tetap is_asset), Pesanan (5 tab, batch pending orders, groupId expand/collapse, Quick View WA+PDF, Completion Modal posting+potong stok, hapus item/group, bulk delete by status, popover pecahan uang), Customer, Aset Tetap (3 trigger penyusutan, preview tahunan, riwayat), Kas & Bank (transfer amount 0 + modal masuk).
 - Terverifikasi: build Vite sukses, halaman login render desktop+mobile tanpa overflow.
 
-## Status Integrasi (2026-09-18)
-- VITE_SUPABASE_URL & VITE_SUPABASE_ANON_KEY SUDAH diisi (project arjbgfddplivkhzootzr) — warning config hilang, login page OK desktop+mobile.
-- Skema DB SUDAH jalan di Supabase user (semua 11 tabel + RPC username_available terverifikasi via REST 200).
-- Akun owner didaftarkan: username `delora` / delora.idn03@gmail.com — email verifikasi terkirim (confirmation_sent_at 2026-09-18).
-- Edge Function `login-with-username` BELUM di-deploy (404) — menunggu user menjalankan `supabase functions deploy login-with-username`.
-- Login E2E terblokir sampai: (1) email diverifikasi user, (2) edge function ter-deploy.
+## Status Integrasi (2026-09-18, UPDATE)
+- VITE_SUPABASE_URL & VITE_SUPABASE_ANON_KEY terpasang (project arjbgfddplivkhzootzr).
+- Skema DB jalan di Supabase user (11 tabel + RPC username_available terverifikasi 200).
+- Edge Function `login-with-username` SUDAH di-deploy agent via CLI (v2.117.0, --no-verify-jwt) — terverifikasi: 401 username salah, 200 + session untuk delora (email sudah terverifikasi).
+- Supabase Personal Access Token dipakai sekali untuk deploy; user disarankan revoke token `sbp_...086b` di dashboard/account/tokens.
+- SEMUA BLOCKER SELESAI → testing agent E2E dijalankan.
 
 ## Backlog (P0/P1/P2)
 - P0: User verifikasi email + deploy edge function → testing agent E2E (login→semua menu→9 aturan lintas-menu).
