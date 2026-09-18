@@ -19,17 +19,18 @@ Web app pembukuan UMKM bouquet & custom product sesuai dokumen kerja v3, stack R
 - 9 halaman: Dashboard (KPI, kas & saldo, grafik recharts, riwayat berwarna), Inventory (stok min ⚠️, sort, komponen custom), Biaya (akun biaya, ringkasan, reverse saldo saat edit/hapus), Penjualan (4 tab: Produk/Custom/Bouquet/TopUp + riwayat + edit reverse), Pembelian (3 tab: Bahan Baku +stok / Custom Request tanpa stok / Aset Tetap is_asset), Pesanan (5 tab, batch pending orders, groupId expand/collapse, Quick View WA+PDF, Completion Modal posting+potong stok, hapus item/group, bulk delete by status, popover pecahan uang), Customer, Aset Tetap (3 trigger penyusutan, preview tahunan, riwayat), Kas & Bank (transfer amount 0 + modal masuk).
 - Terverifikasi: build Vite sukses, halaman login render desktop+mobile tanpa overflow.
 
-## BLOCKER / Menunggu User
-- VITE_SUPABASE_URL & VITE_SUPABASE_ANON_KEY belum diisi (frontend/.env) — user akan lampirkan. Tanpa keys, E2E test belum bisa dijalankan.
-- Edge Function perlu di-deploy user: `supabase functions deploy login-with-username` (panduan: /app/supabase/README.md).
-- Skema perlu dijalankan di SQL Editor Supabase user.
+## Status Integrasi (2026-09-18)
+- VITE_SUPABASE_URL & VITE_SUPABASE_ANON_KEY SUDAH diisi (project arjbgfddplivkhzootzr) — warning config hilang, login page OK desktop+mobile.
+- Skema DB SUDAH jalan di Supabase user (semua 11 tabel + RPC username_available terverifikasi via REST 200).
+- Akun owner didaftarkan: username `delora` / delora.idn03@gmail.com — email verifikasi terkirim (confirmation_sent_at 2026-09-18).
+- Edge Function `login-with-username` BELUM di-deploy (404) — menunggu user menjalankan `supabase functions deploy login-with-username`.
+- Login E2E terblokir sampai: (1) email diverifikasi user, (2) edge function ter-deploy.
 
 ## Backlog (P0/P1/P2)
-- P0: Isi env Supabase → jalankan schema.sql → deploy Edge Function → testing agent E2E (register→login→semua menu).
+- P0: User verifikasi email + deploy edge function → testing agent E2E (login→semua menu→9 aturan lintas-menu).
 - P1: Menu pendukung bagian 9 — Laporan Laba Rugi & Inventory (PDF/Excel), BRILink, Kalkulator Harga, Catatan (financial_notes).
 - P2: Code splitting bundle (869 kB), filter periode custom range di Dashboard, edit pembelian (saat ini hanya hapus), integrasi bot Telegram (di luar scope web).
 
 ## Next Tasks
-1. Minta Project URL + anon key dari user → isi .env → restart frontend.
-2. Verifikasi register/login E2E (buat akun owner: delora.idn03@gmail.com).
-3. Panggil testing agent untuk seluruh alur 8 menu + 9 aturan lintas-menu.
+1. Tunggu user: klik link verifikasi di inbox + deploy edge function.
+2. Panggil testing agent untuk seluruh alur 8 menu + 9 aturan lintas-menu.
