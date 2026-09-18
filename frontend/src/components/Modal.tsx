@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 
 interface Props {
@@ -23,7 +24,9 @@ export const Modal: React.FC<Props> = ({ open, onClose, title, children, wide, .
   }, [open, onClose]);
 
   if (!open) return null;
-  return (
+  // Portal ke body: modal keluar dari ancestor ber-transform (animate-fade-up)
+  // sehingga position:fixed selalu mengacu ke viewport — anti-terpotong, outside-click & mobile full-screen benar.
+  return createPortal(
     <div
       className="fixed inset-0 z-50 overflow-y-auto"
       onClick={onClose}
@@ -49,6 +52,7 @@ export const Modal: React.FC<Props> = ({ open, onClose, title, children, wide, .
         </div>
         <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6">{children}</div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
