@@ -25,12 +25,12 @@ export const Modal: React.FC<Props> = ({ open, onClose, title, children, wide, .
   if (!open) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex items-stretch justify-center bg-black/60 sm:items-center sm:p-4"
+      className="fixed inset-0 z-50 overflow-y-auto"
       onClick={onClose}
       data-testid={rest['data-testid'] || 'modal'}
     >
       <div
-        className={`animate-modal flex h-full w-full flex-col bg-white sm:h-auto sm:max-h-[92vh] sm:rounded-2xl sm:border sm:border-[#E6E2D8] sm:shadow-[0_24px_48px_-12px_rgba(31,40,35,0.25)] ${
+        className={`animate-modal mx-auto flex min-h-full w-full flex-col bg-white shadow-2xl sm:my-8 sm:h-auto sm:min-h-0 sm:max-h-[calc(100vh-4rem)] sm:rounded-2xl sm:border sm:border-[#E6E2D8] sm:shadow-[0_24px_64px_-12px_rgba(31,40,35,0.35)] ${
           wide ? 'sm:max-w-3xl' : 'sm:max-w-lg'
         }`}
         onClick={(e) => e.stopPropagation()}
