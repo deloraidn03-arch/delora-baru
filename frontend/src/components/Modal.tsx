@@ -25,7 +25,7 @@ export const Modal: React.FC<Props> = ({ open, onClose, title, children, wide, .
   if (!open) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex items-stretch justify-center bg-[#1F2823]/40 sm:items-center sm:p-4"
+      className="fixed inset-0 z-50 flex items-stretch justify-center bg-white/25 backdrop-blur-md sm:items-center sm:p-4"
       onClick={onClose}
       data-testid={rest['data-testid'] || 'modal'}
     >
